@@ -1,0 +1,347 @@
+/* ==================== POMODORO FULLSCREEN TIMER ==================== */
+
+.pomodoro-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.pomodoro-container {
+  text-align: center;
+  color: white;
+  max-width: 600px;
+  padding: 40px;
+  position: relative;
+}
+
+/* Close Button */
+.pomodoro-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 32px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.pomodoro-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Header */
+.pomodoro-header {
+  margin-bottom: 48px;
+}
+
+.phase-icon {
+  font-size: 72px;
+  margin-bottom: 16px;
+  animation: bounce 2s ease infinite;
+}
+
+.phase-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Timer Circle */
+.timer-circle {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto 48px;
+}
+
+.timer-ring {
+  transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 12;
+}
+
+.timer-ring-progress {
+  fill: none;
+  stroke: var(--progress-color, white);
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+.timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.timer-main {
+  font-size: 72px;
+  font-weight: 700;
+  font-family: 'Monaco', 'Courier New', monospace;
+  letter-spacing: 4px;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.timer-label {
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+
+/* Controls */
+.pomodoro-controls {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.pomodoro-btn {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  min-width: 150px;
+  justify-content: center;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger {
+  background: rgba(244, 67, 54, 0.3);
+  color: white;
+  border: 2px solid rgba(244, 67, 54, 0.5);
+}
+
+.btn-danger:hover {
+  background: rgba(244, 67, 54, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(244, 67, 54, 0.3);
+}
+
+.pomodoro-btn:active {
+  transform: translateY(0);
+}
+
+/* Info Section */
+.pomodoro-info {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.info-item {
+  text-align: center;
+}
+
+.info-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.info-value {
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+  .pomodoro-container {
+    padding: 20px;
+  }
+
+  .phase-icon {
+    font-size: 56px;
+  }
+
+  .phase-title {
+    font-size: 28px;
+  }
+
+  .timer-ring {
+    width: 240px;
+    height: 240px;
+  }
+
+  .timer-main {
+    font-size: 56px;
+  }
+
+  .timer-label {
+    font-size: 14px;
+  }
+
+  .pomodoro-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pomodoro-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .pomodoro-info {
+    gap: 20px;
+    padding: 24px;
+  }
+
+  .info-value {
+    font-size: 22px;
+  }
+
+  .pomodoro-close {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timer-ring {
+    width: 200px;
+    height: 200px;
+  }
+
+  .timer-ring-bg,
+  .timer-ring-progress {
+    r: 90;
+    cx: 100;
+    cy: 100;
+  }
+
+  .timer-main {
+    font-size: 48px;
+  }
+
+  .phase-title {
+    font-size: 24px;
+  }
+
+  .pomodoro-btn {
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+}
+
+/* ==================== BREAK MODE ==================== */
+
+.pomodoro-fullscreen.break-mode {
+  background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .phase-icon,
+  .pomodoro-btn,
+  .timer-ring-progress {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ==================== DARK MODE SUPPORT ==================== */
+
+@media (prefers-color-scheme: dark) {
+  /* Pomodoro timer zaten dark themed, fazla değişiklik gerekmiyor */
+  .timer-ring-bg {
+    stroke: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* ==================== PRINT HIDE ==================== */
+
+@media print {
+  .pomodoro-fullscreen {
+    display: none;
+  }
+}

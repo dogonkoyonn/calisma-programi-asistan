@@ -1,0 +1,464 @@
+/* ==================== BADGES & ACHIEVEMENTS STYLES ==================== */
+
+/* Badge Modal */
+.badge-modal-overlay {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.badge-modal {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+  padding: 48px 32px;
+  text-align: center;
+  max-width: 500px;
+  animation: badgePopIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-modal::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.badge-celebration {
+  position: relative;
+  z-index: 1;
+}
+
+.badge-icon-lg {
+  font-size: 96px;
+  margin-bottom: 24px;
+  animation: badgeBounce 1s ease infinite;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+}
+
+.badge-modal h2 {
+  font-size: 32px;
+  margin: 0 0 24px;
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.badge-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.badge-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.badge-tier {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-tier.bronze {
+  background: linear-gradient(135deg, #cd7f32, #b87333);
+  color: white;
+}
+
+.badge-tier.silver {
+  background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+  color: white;
+}
+
+.badge-tier.gold {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #333;
+}
+
+.badge-tier.platinum {
+  background: linear-gradient(135deg, #e5e4e2, #d5d5d5);
+  color: #333;
+  box-shadow: 0 0 16px rgba(229, 228, 226, 0.5);
+}
+
+.badge-description {
+  font-size: 18px;
+  color: #666;
+  line-height: 1.6;
+  margin: 24px 0 32px;
+}
+
+/* ==================== BADGE GALLERY ==================== */
+
+.badge-gallery {
+  padding: 20px;
+}
+
+.gallery-header {
+  margin-bottom: 32px;
+}
+
+.gallery-header h3 {
+  font-size: 24px;
+  color: #1a1a1a;
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.badge-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.badge-progress span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.badge-progress-bar {
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.badge-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+/* Badge Grid */
+.badge-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.badge-category h4 {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 16px;
+  font-weight: 600;
+  padding-left: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.badge-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.badge-item {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 20px 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.badge-item.earned {
+  background: linear-gradient(135deg, #f8f9ff, #fff);
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.badge-item.earned:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
+}
+
+.badge-item.locked {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.badge-item.locked:hover {
+  transform: none;
+}
+
+.badge-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.badge-item.earned .badge-icon {
+  animation: badgePulse 2s ease infinite;
+}
+
+.badge-item .badge-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.badge-tier-mini {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 8px auto 0;
+}
+
+.badge-tier-mini.bronze {
+  background: linear-gradient(135deg, #cd7f32, #b87333);
+}
+
+.badge-tier-mini.silver {
+  background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+}
+
+.badge-tier-mini.gold {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+}
+
+.badge-tier-mini.platinum {
+  background: linear-gradient(135deg, #e5e4e2, #d5d5d5);
+  box-shadow: 0 0 8px rgba(229, 228, 226, 0.8);
+}
+
+/* ==================== LATEST BADGE (SIDEBAR) ==================== */
+
+.latest-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f8f9ff, #fff);
+  border: 2px solid #667eea;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.latest-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+}
+
+.latest-badge-icon {
+  font-size: 48px;
+  line-height: 1;
+  animation: badgePulse 2s ease infinite;
+}
+
+.latest-badge-info {
+  flex: 1;
+}
+
+.latest-badge-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 4px;
+}
+
+.latest-badge-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.no-badges {
+  text-align: center;
+  color: #999;
+  padding: 40px 20px;
+  font-size: 14px;
+}
+
+/* ==================== CONFETTI ANIMATION ==================== */
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -20px;
+  animation: confettiFall 4s linear forwards;
+  border-radius: 2px;
+}
+
+@keyframes confettiFall {
+  0% {
+    top: -20px;
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  100% {
+    top: 100vh;
+    opacity: 0;
+    transform: rotate(720deg);
+  }
+}
+
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes badgePopIn {
+  0% {
+    transform: scale(0.3) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes badgeBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+  .badge-modal {
+    width: 95%;
+    padding: 32px 24px;
+  }
+
+  .badge-icon-lg {
+    font-size: 72px;
+  }
+
+  .badge-modal h2 {
+    font-size: 24px;
+  }
+
+  .badge-name {
+    font-size: 22px;
+  }
+
+  .badge-description {
+    font-size: 16px;
+  }
+
+  .badge-list {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+
+  .badge-item {
+    padding: 16px 8px;
+  }
+
+  .badge-icon {
+    font-size: 40px;
+  }
+
+  .badge-item .badge-name {
+    font-size: 12px;
+  }
+
+  .latest-badge-icon {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .badge-list {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+
+  .badge-icon {
+    font-size: 32px;
+  }
+
+  .badge-item {
+    padding: 12px 6px;
+  }
+}
+
+/* ==================== DARK MODE ==================== */
+
+@media (prefers-color-scheme: dark) {
+  .badge-modal {
+    background: #1e1e1e;
+    color: #e0e0e0;
+  }
+
+  .badge-modal h2 {
+    color: #e0e0e0;
+  }
+
+  .badge-item {
+    background: #2a2a2a;
+    border-color: #444;
+  }
+
+  .badge-item.earned {
+    background: linear-gradient(135deg, #2a2a4a, #2a2a2a);
+    border-color: #667eea;
+  }
+
+  .latest-badge {
+    background: linear-gradient(135deg, #2a2a4a, #2a2a2a);
+  }
+
+  .badge-progress-bar {
+    background: #444;
+  }
+}
+
+/* ==================== PRINT ==================== */
+
+@media print {
+  .confetti-container,
+  .badge-modal-overlay {
+    display: none;
+  }
+}

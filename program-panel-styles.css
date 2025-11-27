@@ -1,0 +1,355 @@
+/* ==================== PROGRAM PANELİ STİLLERİ ==================== */
+
+.program-panel {
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.program-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.program-panel::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.program-panel::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.panel-header h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+/* Program Kartları */
+.programs-list {
+    display: grid;
+    gap: 20px;
+}
+
+.program-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.program-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.program-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.program-header h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.program-info {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.program-info span {
+    font-size: 14px;
+    color: #666;
+}
+
+/* İlerleme Çubuğu */
+.progress-bar {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #66BB6A);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* Program Card Actions */
+.program-card-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+/* Butonlar */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.btn-secondary:hover {
+    background: #667eea;
+    color: white;
+}
+
+.btn-danger-small {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-danger-small:hover {
+    background: #cc0000;
+}
+
+.btn-primary-small {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-back {
+    background: #f5f5f5;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.btn-back:hover {
+    background: #e0e0e0;
+}
+
+/* Boş Durum */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-state p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+/* Program Detayları */
+.program-details {
+    padding: 20px;
+}
+
+.program-detail-header {
+    margin-bottom: 24px;
+}
+
+.program-detail-header h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.program-subject {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Program Bilgileri Grid */
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.schedule-item {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.schedule-item .label {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.schedule-item .value {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Kaynaklar */
+.program-resources,
+.program-schedule,
+.program-topics {
+    margin-top: 24px;
+}
+
+.program-resources h4,
+.program-schedule h4,
+.program-topics h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.resources-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.resource-tag {
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    color: #555;
+}
+
+/* Konular */
+.topics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.topics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.topic-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.topic-item:hover {
+    background: #f0f0f0;
+}
+
+.topic-item.completed {
+    opacity: 0.6;
+}
+
+.topic-item.completed .topic-name {
+    text-decoration: line-through;
+}
+
+.topic-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.topic-name {
+    flex: 1;
+    font-size: 15px;
+    color: #333;
+}
+
+.topic-duration {
+    font-size: 13px;
+    color: #999;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.empty-topics {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .schedule-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .program-card-actions {
+        flex-direction: column;
+    }
+
+    .program-card-actions button {
+        width: 100%;
+    }
+}

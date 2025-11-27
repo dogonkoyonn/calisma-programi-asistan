@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Öğrenme Asistanı v2.0</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Kişiselleştirilmiş çalışma programları oluştur, kaynak keşfet, ilerlemeni takip et!">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="StudyPlan">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="program-panel-styles.css">
+    <link rel="stylesheet" href="wizard-styles.css">
+    <link rel="stylesheet" href="magnetic-tilt.css">
+    <link rel="stylesheet" href="settings-panel.css">
+    <link rel="stylesheet" href="program-dashboard.css">
+    <link rel="stylesheet" href="session-styles.css">
+    <link rel="stylesheet" href="timer-styles.css">
+    <link rel="stylesheet" href="daily-log-styles.css">
+    <link rel="stylesheet" href="badges-styles.css">
+
+    <!-- EmailJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <link rel="stylesheet" href="notification-dialog.css">
+    <link rel="stylesheet" href="calendar-view.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">📚</div>
+                    <div class="logo-text">
+                        <h2>StudyPlan</h2>
+                        <span>Akıllı Çalışma Asistanı</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-actions">
+                <button class="sidebar-btn" id="programPanelBtn">
+                    <span class="icon">📚</span>
+                    <span>Programlarım</span>
+                </button>
+                <button class="sidebar-btn" id="newProgramBtn">
+                    <span class="icon">➕</span>
+                    <span>Yeni Program</span>
+                </button>
+            </div>
+
+            <!-- Sidebar Stats Widget -->
+            <div class="sidebar-stats" id="sidebarStats">
+                <h4>📊 İstatistikler</h4>
+                <div class="stat-item">
+                    <span class="stat-label">Toplam Program</span>
+                    <span class="stat-value" id="totalPrograms">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tamamlanan</span>
+                    <span class="stat-value success" id="completedTopics">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Devam Eden</span>
+                    <span class="stat-value warning" id="ongoingTopics">0</span>
+                </div>
+            </div>
+
+            <!-- Quick Tips Widget -->
+            <div class="sidebar-tips">
+                <h4>💡 İpucu</h4>
+                <p class="tip-text" id="dailyTip">Her gün düzenli çalış, küçük adımlar büyük başarılar getirir!</p>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="sidebar-btn" onclick="settingsPanel.open()">
+                    <span class="icon">⚙️</span>
+                    <span>Ayarlar</span>
+                </button>
+                <div class="status">
+                    <div class="status-dot" style="background: #4CAF50;"></div>
+                    <span>Sistem Hazır</span>
+                </div>
+                <div class="version">v2.0 - Program Asistanı</div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Welcome Screen -->
+            <main class="chat-container" id="welcomeScreen">
+                <div class="welcome-content">
+                    <div class="welcome-icon">📚</div>
+                    <h1>Çalışma Programı Asistanı</h1>
+                    <p>Kişiselleştirilmiş çalışma programları oluştur, kaynak keşfet, ilerlemeni takip et!</p>
+
+                    <div class="welcome-actions">
+                        <button class="welcome-btn primary" onclick="app.showCreateProgramForm()">
+                            ➕ Yeni Program Oluştur
+                        </button>
+                        <button class="welcome-btn secondary" onclick="app.openDashboard()">
+                            📚 Programlarımı Gör
+                        </button>
+                    </div>
+
+                    <div class="features">
+                        <div class="feature-item">
+                            <span class="feature-icon">🎯</span>
+                            <h3>Adım Adım Sihirbaz</h3>
+                            <p>5 adımda özel programını oluştur</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📺</span>
+                            <h3>40+ YouTube Kanalı</h3>
+                            <p>Seviyene uygun kaynaklar</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📊</span>
+                            <h3>İlerleme Takibi</h3>
+                            <p>Konuları tamamla, ilerle!</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">⚡</span>
+                            <h3>4 Çalışma Modu</h3>
+                            <p>Sprint, Marathon, Balanced, Casual</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🎨</span>
+                            <h3>Hazır Şablonlar</h3>
+                            <p>TYT, AYT, Final programları</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">💾</span>
+                            <h3>Otomatik Kayıt</h3>
+                            <p>Hiçbir şey kaybetme!</p>
+                        </div>
+                    </div>
+
+                    <div class="popular-subjects">
+                        <h3>🎓 Kimler İçin?</h3>
+                        <div class="subject-badges">
+                            <span class="subject-badge math">🎓 Üniversite</span>
+                            <span class="subject-badge physics">🏫 Lise</span>
+                            <span class="subject-badge chemistry">💼 Sertifika</span>
+                            <span class="subject-badge biology">🌍 Dil Öğrenme</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Detail Panel -->
+            <aside class="detail-panel" id="detailPanel" style="display: none;">
+                <div class="detail-header">
+                    <div class="detail-title">
+                        <h2>📊 Kontrol Paneli</h2>
+                    </div>
+                    <button class="close-detail" id="closeDetailBtn">✕</button>
+                </div>
+
+                <div class="detail-body">
+                    <!-- Content will be dynamically loaded based on active tab -->
+                    <div id="panelContent">
+                        <!-- Dashboard, Schedule, Resources, Tasks, Stats will be rendered here -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Wizard Modal -->
+            <div id="wizardContainer" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto; padding: 40px 20px;">
+                <!-- Wizard content will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Modules -->
+    <script src="version.js"></script>
+    <script src="user-manager.js"></script>
+    <script src="resources-db.js"></script>
+    <script src="study-tracker.js"></script>
+
+    <!-- Features -->
+    <script src="notification-manager.js"></script>
+    <script src="calendar-view.js"></script>
+    <script src="program-wizard.js"></script>
+    <script src="session-manager.js"></script>
+    <script src="pomodoro-timer.js"></script>
+    <script src="daily-log-viewer.js"></script>
+    <script src="badges-system.js"></script>
+    <script src="magnetic-tilt.js"></script>
+
+    <!-- Update & Error Management -->
+    <script src="error-logger.js"></script>
+    <script src="email-notifier.js"></script>
+    <script src="telegram-notifier.js"></script>
+    <script src="telegram-bot.js"></script>
+    <script src="settings-panel.js"></script>
+    <script src="program-dashboard.js"></script>
+    <script src="update-manager.js"></script>
+
+    <!-- Main App -->
+    <script src="app.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker kayıtlı:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker kaydı başarısız:', error);
+                    });
+            });
+        } else if (location.protocol === 'file:') {
+            console.log('ℹ️ Development mode (file://): Service Worker registration atlandı');
+        }
+    </script>
+</body>
+</html>

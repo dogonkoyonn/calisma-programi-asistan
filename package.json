@@ -1,0 +1,17 @@
+{
+  "name": "akilli-calisma-programi-asistan",
+  "version": "2.0.0",
+  "description": "Gelişmiş AI destekli kişiselleştirilmiş öğrenme asistanı",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "start index.html"
+  },
+  "keywords": ["study", "ai", "learning", "education", "tyt", "ayt"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
