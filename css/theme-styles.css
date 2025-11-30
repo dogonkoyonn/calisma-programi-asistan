@@ -13,7 +13,7 @@
   --bg-secondary: #ffffff;
   --bg-tertiary: #f0f2f5;
   --bg-card: #ffffff;
-  --bg-sidebar: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  --bg-sidebar: #ffffff;
   --bg-overlay: rgba(0, 0, 0, 0.5);
 
   /* Text Colors */
@@ -102,9 +102,9 @@ body {
 }
 
 .sidebar-btn {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-inverse);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 [data-theme="dark"] .sidebar-btn {
@@ -113,7 +113,9 @@ body {
 }
 
 .sidebar-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 /* Main Content */
@@ -619,5 +621,108 @@ textarea:focus {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* ==================== MOTIVATION POPUP ==================== */
+
+.motivation-popup {
+  position: fixed;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  pointer-events: none;
+}
+
+.motivation-popup.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.motivation-popup.top-left {
+  top: 20px;
+  left: 300px;
+}
+
+.motivation-popup.top-right {
+  top: 20px;
+  right: 20px;
+}
+
+.motivation-popup .popup-content {
+  background: var(--bg-card);
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+  max-width: 380px;
+  position: relative;
+  animation: popupBounce 0.5s ease;
+}
+
+@keyframes popupBounce {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.motivation-popup .popup-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.motivation-popup .popup-close:hover {
+  color: var(--error-color);
+  transform: scale(1.2);
+}
+
+.motivation-popup .popup-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.motivation-popup .popup-text {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.motivation-popup .popup-author {
+  display: block;
+  font-size: 13px;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* Dark mode için popup ayarları */
+[data-theme="dark"] .motivation-popup .popup-content {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobil için popup pozisyonu */
+@media (max-width: 768px) {
+  .motivation-popup.top-left,
+  .motivation-popup.top-right {
+    left: 16px;
+    right: 16px;
+    top: 16px;
+  }
+
+  .motivation-popup .popup-content {
+    max-width: 100%;
   }
 }

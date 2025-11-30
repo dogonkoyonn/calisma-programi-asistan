@@ -1,7 +1,7 @@
 // ==================== SERVICE WORKER - PWA ====================
 // Offline support & caching strategy
 
-const VERSION = '2.5.1';
+const VERSION = '2.5.2';
 const CACHE_NAME = `studyplan-v${VERSION}`;
 const DYNAMIC_CACHE = `studyplan-dynamic-v${VERSION}`;
 

@@ -70,12 +70,105 @@ class MotivationalQuotes {
   constructor() {
     this.quotes = MOTIVATIONAL_QUOTES;
     this.currentQuote = null;
+    this.popupVisible = false;
     this.init();
   }
 
   init() {
     this.showRandomQuote();
+    this.createPopupContainer();
+    this.startRandomPopups();
     console.log('💬 Motivasyon Sözleri yüklendi');
+  }
+
+  /**
+   * Popup container oluştur
+   */
+  createPopupContainer() {
+    if (document.getElementById('motivationPopup')) return;
+
+    const popup = document.createElement('div');
+    popup.id = 'motivationPopup';
+    popup.className = 'motivation-popup';
+    popup.innerHTML = `
+      <div class="popup-content">
+        <button class="popup-close" onclick="motivationalQuotes.hidePopup()">×</button>
+        <div class="popup-icon">💡</div>
+        <p class="popup-text"></p>
+        <span class="popup-author"></span>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  }
+
+  /**
+   * Rastgele zamanlarda popup göster
+   */
+  startRandomPopups() {
+    // İlk popup 1-3 dakika sonra
+    const firstDelay = this.getRandomDelay(1, 3);
+    setTimeout(() => {
+      this.showPopup();
+      this.scheduleNextPopup();
+    }, firstDelay);
+  }
+
+  /**
+   * Sonraki popup'ı planla (3-8 dakika arası rastgele)
+   */
+  scheduleNextPopup() {
+    const delay = this.getRandomDelay(3, 8);
+    setTimeout(() => {
+      this.showPopup();
+      this.scheduleNextPopup();
+    }, delay);
+  }
+
+  /**
+   * Rastgele gecikme süresi (dakika cinsinden)
+   */
+  getRandomDelay(minMinutes, maxMinutes) {
+    const min = minMinutes * 60 * 1000;
+    const max = maxMinutes * 60 * 1000;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  /**
+   * Popup göster
+   */
+  showPopup() {
+    if (this.popupVisible) return;
+
+    const quote = this.getRandomQuote();
+    const popup = document.getElementById('motivationPopup');
+    if (!popup) return;
+
+    const textEl = popup.querySelector('.popup-text');
+    const authorEl = popup.querySelector('.popup-author');
+
+    if (textEl) textEl.textContent = `"${quote.text}"`;
+    if (authorEl) authorEl.textContent = `— ${quote.author}`;
+
+    // Rastgele pozisyon (sol üst veya sağ üst)
+    const position = Math.random() > 0.5 ? 'top-left' : 'top-right';
+    popup.className = `motivation-popup ${position} show`;
+    this.popupVisible = true;
+
+    // 8 saniye sonra otomatik kapat
+    setTimeout(() => {
+      this.hidePopup();
+    }, 8000);
+  }
+
+  /**
+   * Popup gizle
+   */
+  hidePopup() {
+    const popup = document.getElementById('motivationPopup');
+    if (popup) {
+      popup.classList.remove('show');
+      this.popupVisible = false;
+    }
   }
 
   /**
