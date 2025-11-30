@@ -23,8 +23,8 @@ class UpdateManager {
         }
 
         try {
-            // Service Worker kayıt
-            this.registration = await navigator.serviceWorker.register('/sw.js');
+            // Service Worker kayıt (relative path for GitHub Pages)
+            this.registration = await navigator.serviceWorker.register('./sw.js');
             console.log('✅ Service Worker registered:', this.registration.scope);
 
             // Update kontrolü başlat

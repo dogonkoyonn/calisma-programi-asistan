@@ -3,7 +3,7 @@
 
 const APP_VERSION = {
     major: 2,
-    minor: 1,
+    minor: 4,
     patch: 0,
 
     toString() {
@@ -41,29 +41,56 @@ const APP_VERSION = {
 
 // Changelog (yeni versiyonlarda güncellenir)
 const CHANGELOG = {
+    '2.4.0': {
+        date: '2025-11-29',
+        features: [
+            'Takvim sekmesi tamamen yenilendi',
+            'Program listesi sidebar eklendi',
+            'Ay navigasyonu calisiyor',
+            'Dark mode tam destek'
+        ],
+        fixes: [
+            'Calendar tab gorsel hatalari duzeltildi',
+            'CSS degiskenleri tum dashboard icin guncellendi',
+            'Service Worker path sorunu cozuldu'
+        ]
+    },
+    '2.3.0': {
+        date: '2025-11-28',
+        features: [
+            'Dark/Light tema toggle',
+            'Motivasyonel altiazlar',
+            'PDF export ozelligi',
+            'Feedback formu'
+        ],
+        fixes: [
+            'Klasor yapisı duzenlendi',
+            'Icon SVG olarak guncellendi'
+        ]
+    },
     '2.1.0': {
         date: '2025-11-16',
         features: [
-            'Family Tree UI - Hiyerarşik program oluşturma',
-            'Quick Start Wizard - Tek tıkla program',
-            'User Manager - Kullanıcı profili ve ayarlar',
-            'Update Manager - Otomatik güncelleme',
+            'Family Tree UI - Hiyerarsik program olusturma',
+            'Quick Start Wizard - Tek tikla program',
+            'User Manager - Kullanici profili ve ayarlar',
+            'Update Manager - Otomatik guncelleme',
             'Error Tracking - Hata loglama sistemi'
         ],
         fixes: [
-            'Scroll hataları düzeltildi',
-            'Panel çakışmaları giderildi',
-            'Magnetic tilt tüm butonlara eklendi',
-            'Tooltip baloncukları iyileştirildi'
+            'Scroll hatalari duzeltildi',
+            'Panel cakismalari giderildi',
+            'Magnetic tilt tum butonlara eklendi',
+            'Tooltip baloncuklari iyilestirildi'
         ]
     },
     '2.0.0': {
         date: '2025-11-15',
         features: [
-            'Haftalık takvim görünümü',
+            'Haftalik takvim gorunumu',
             'Bootcamp sistemi',
-            'Bildirim yönetimi',
-            'PWA desteği'
+            'Bildirim yonetimi',
+            'PWA destegi'
         ],
         fixes: []
     }

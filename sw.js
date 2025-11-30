@@ -1,27 +1,60 @@
 // ==================== SERVICE WORKER - PWA ====================
 // Offline support & caching strategy
 
-const VERSION = '2.1.0';
+const VERSION = '2.5.0';
 const CACHE_NAME = `studyplan-v${VERSION}`;
 const DYNAMIC_CACHE = `studyplan-dynamic-v${VERSION}`;
 
-// Önbelleklene cek dosyalar (kritik)
+// Base URL - GitHub Pages subdirectory desteği
+const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
+
+// Önbelleğe alınacak dosyalar (kritik)
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/program-panel-styles.css',
-  '/wizard-styles.css',
-  '/app.js',
-  '/resources-db.js',
-  '/program-wizard.js',
-  '/study-tracker.js',
+  BASE + '/',
+  BASE + '/index.html',
+  BASE + '/manifest.json',
+  // CSS
+  BASE + '/css/styles.css',
+  BASE + '/css/program-panel-styles.css',
+  BASE + '/css/wizard-styles.css',
+  BASE + '/css/program-dashboard.css',
+  BASE + '/css/session-styles.css',
+  BASE + '/css/timer-styles.css',
+  BASE + '/css/daily-log-styles.css',
+  BASE + '/css/badges-styles.css',
+  BASE + '/css/theme-styles.css',
+  BASE + '/css/settings-panel.css',
+  BASE + '/css/notification-dialog.css',
+  BASE + '/css/calendar-view.css',
+  BASE + '/css/magnetic-tilt.css',
+  // JS
+  BASE + '/js/app.js',
+  BASE + '/js/version.js',
+  BASE + '/js/user-manager.js',
+  BASE + '/js/resources-db.js',
+  BASE + '/js/study-tracker.js',
+  BASE + '/js/program-wizard.js',
+  BASE + '/js/program-dashboard.js',
+  BASE + '/js/session-manager.js',
+  BASE + '/js/pomodoro-timer.js',
+  BASE + '/js/daily-log-viewer.js',
+  BASE + '/js/badges-system.js',
+  BASE + '/js/calendar-view.js',
+  BASE + '/js/notification-manager.js',
+  BASE + '/js/settings-panel.js',
+  BASE + '/js/theme-manager.js',
+  BASE + '/js/motivational-quotes.js',
+  BASE + '/js/loading-spinner.js',
+  BASE + '/js/pdf-export.js',
+  BASE + '/js/feedback-form.js',
+  // Fonts
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
 ];
 
 // ==================== INSTALL ====================
 self.addEventListener('install', (event) => {
   console.log(`[SW] Installing version ${VERSION}...`);
+  console.log(`[SW] Base path: ${BASE}`);
 
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -30,6 +63,9 @@ self.addEventListener('install', (event) => {
         return cache.addAll(urlsToCache);
       })
       .then(() => self.skipWaiting())
+      .catch((error) => {
+        console.error('[SW] Cache failed:', error);
+      })
   );
 });
 
@@ -86,7 +122,7 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Offline ise, fallback sayfası göster
         if (event.request.destination === 'document') {
-          return caches.match('/index.html');
+          return caches.match(BASE + '/index.html');
         }
       });
     })
@@ -96,13 +132,13 @@ self.addEventListener('fetch', (event) => {
 // ==================== PUSH NOTIFICATION ====================
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
-  const title = data.title || '📚 StudyPlan';
+  const title = data.title || 'StudyPlan';
   const options = {
     body: data.body || 'Çalışma zamanı!',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-72x72.png',
+    icon: BASE + '/icons/icon-192x192.png',
+    badge: BASE + '/icons/icon-72x72.png',
     vibrate: [200, 100, 200],
-    data: data.url || '/',
+    data: data.url || BASE + '/',
     actions: [
       { action: 'open', title: 'Aç' },
       { action: 'close', title: 'Kapat' }
@@ -120,7 +156,7 @@ self.addEventListener('notificationclick', (event) => {
 
   if (event.action === 'open' || !event.action) {
     event.waitUntil(
-      clients.openWindow(event.notification.data || '/')
+      clients.openWindow(event.notification.data || BASE + '/')
     );
   }
 });

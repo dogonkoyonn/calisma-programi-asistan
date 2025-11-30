@@ -5,6 +5,9 @@ class ProgramDashboard {
     constructor() {
         this.activeTab = 'dashboard';
         this.viewMode = 'grid'; // grid or list
+        this.calendarView = 'monthly'; // weekly, daily, monthly
+        this.currentMonth = new Date().getMonth();
+        this.currentYear = new Date().getFullYear();
         this.filters = {
             status: 'all', // all, active, completed, paused
             level: 'all',  // all, temel, orta, ileri
@@ -161,24 +164,131 @@ class ProgramDashboard {
     }
 
     renderCalendarTab() {
+        const programs = this.getAllPrograms();
+        const monthName = new Date(this.currentYear, this.currentMonth).toLocaleDateString('tr-TR', {
+            month: 'long',
+            year: 'numeric'
+        });
+
         return `
             <div class="calendar-tab-content">
-                <div class="calendar-controls">
-                    <button class="btn-secondary" onclick="programDashboard.showWeeklyCalendar()">
-                        📅 Haftalık
-                    </button>
-                    <button class="btn-secondary" onclick="programDashboard.showDailyCalendar()">
-                        📆 Günlük
-                    </button>
-                    <button class="btn-secondary" onclick="programDashboard.showMonthlyCalendar()">
-                        📊 Aylık
-                    </button>
+                <!-- Sol Panel: Program Listesi -->
+                <div class="calendar-sidebar">
+                    <div class="calendar-programs-list">
+                        <h3>📚 Programlar</h3>
+                        ${programs.length > 0 ? programs.map(p => `
+                            <div class="calendar-program-item" style="border-left: 4px solid ${this.getProgramColor(p.id)}">
+                                <span class="program-color-dot" style="background: ${this.getProgramColor(p.id)}"></span>
+                                <span class="program-name">${p.name}</span>
+                                <span class="program-progress-badge">${this.calculateProgress(p)}%</span>
+                            </div>
+                        `).join('') : '<p class="no-programs-text">Henuz program yok</p>'}
+                    </div>
+
+                    <!-- Takvim Gorunum Secenekleri -->
+                    <div class="calendar-view-options">
+                        <h4>Gorunum</h4>
+                        <button class="view-option-btn ${this.calendarView === 'monthly' ? 'active' : ''}" onclick="programDashboard.setCalendarView('monthly')">
+                            🗓️ Aylik
+                        </button>
+                        <button class="view-option-btn ${this.calendarView === 'weekly' ? 'active' : ''}" onclick="programDashboard.setCalendarView('weekly')">
+                            📅 Haftalik
+                        </button>
+                        <button class="view-option-btn ${this.calendarView === 'daily' ? 'active' : ''}" onclick="programDashboard.setCalendarView('daily')">
+                            📆 Gunluk
+                        </button>
+                    </div>
                 </div>
-                <div id="calendarViewContainer">
-                    <p class="info-text">Takvim görünümünü seçin...</p>
+
+                <!-- Sag Panel: Takvim -->
+                <div class="calendar-main">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn" onclick="programDashboard.navigateMonth(-1)">
+                            ◀ Onceki
+                        </button>
+                        <h3 class="calendar-title">${monthName}</h3>
+                        <button class="calendar-nav-btn" onclick="programDashboard.navigateMonth(1)">
+                            Sonraki ▶
+                        </button>
+                    </div>
+                    <div class="calendar-grid">
+                        ${this.renderCalendarGrid()}
+                    </div>
                 </div>
             </div>
         `;
+    }
+
+    renderCalendarGrid() {
+        const year = this.currentYear;
+        const month = this.currentMonth;
+        const today = new Date();
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const dayNames = ['Paz', 'Pzt', 'Sal', 'Car', 'Per', 'Cum', 'Cmt'];
+
+        let html = '<div class="calendar-day-names">';
+        dayNames.forEach(day => {
+            html += `<div class="calendar-day-name">${day}</div>`;
+        });
+        html += '</div>';
+
+        html += '<div class="calendar-days">';
+
+        // Bos gunler
+        for (let i = 0; i < firstDay; i++) {
+            html += '<div class="calendar-day empty"></div>';
+        }
+
+        // Gunler
+        for (let day = 1; day <= daysInMonth; day++) {
+            const isToday = day === today.getDate() &&
+                           month === today.getMonth() &&
+                           year === today.getFullYear();
+            const taskCount = this.getTaskCountForDay(year, month, day);
+
+            html += `
+                <div class="calendar-day ${isToday ? 'today' : ''}" onclick="programDashboard.showDayDetail(${year}, ${month}, ${day})">
+                    <span class="day-num">${day}</span>
+                    ${taskCount > 0 ? `<span class="day-task-count">${taskCount}</span>` : ''}
+                </div>
+            `;
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    getTaskCountForDay(year, month, day) {
+        const programs = this.getAllPrograms();
+        let count = 0;
+        const date = new Date(year, month, day);
+        const dayOfWeek = date.getDay();
+        const dayNames = ['pazar', 'pazartesi', 'sali', 'carsamba', 'persembe', 'cuma', 'cumartesi'];
+
+        programs.forEach(p => {
+            if (p.schedule && p.schedule.days && p.schedule.days.includes(dayNames[dayOfWeek])) {
+                count++;
+            }
+        });
+
+        return count;
+    }
+
+    setCalendarView(view) {
+        this.calendarView = view;
+        const calendarContent = this.panel.querySelector('.tab-content[data-tab="calendar"]');
+        if (calendarContent) {
+            calendarContent.innerHTML = this.renderCalendarTab();
+        }
+    }
+
+    getProgramColor(programId) {
+        const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#43e97b', '#fa709a', '#fee140'];
+        const index = programId ? programId.charCodeAt(0) % colors.length : 0;
+        return colors[index];
     }
 
     renderStatsTab() {
@@ -356,6 +466,9 @@ class ProgramDashboard {
                         <button class="btn-icon" onclick="programDashboard.showProgramDetails('${program.id}')" title="Detaylar">
                             📊
                         </button>
+                        <button class="btn-icon" onclick="programDashboard.exportProgramPDF('${program.id}')" title="PDF İndir">
+                            📄
+                        </button>
                         <button class="btn-icon" onclick="programDashboard.editProgram('${program.id}')" title="Düzenle">
                             ✏️
                         </button>
@@ -507,11 +620,21 @@ class ProgramDashboard {
             content.classList.toggle('active', content.dataset.tab === tabName);
         });
 
-        // Stats tab'a geçildiğinde grafikleri render et
-        if (tabName === 'stats') {
+        // Tab'a gore icerigi yeniden render et
+        if (tabName === 'calendar') {
+            const calendarContent = this.panel.querySelector('.tab-content[data-tab="calendar"]');
+            if (calendarContent) {
+                calendarContent.innerHTML = this.renderCalendarTab();
+            }
+        } else if (tabName === 'stats') {
             setTimeout(() => {
                 this.renderCharts();
             }, 100);
+        } else if (tabName === 'dashboard') {
+            const dashboardContent = this.panel.querySelector('.tab-content[data-tab="dashboard"]');
+            if (dashboardContent) {
+                dashboardContent.innerHTML = this.renderDashboardTab();
+            }
         }
     }
 
@@ -535,6 +658,10 @@ class ProgramDashboard {
     toggleFilters() {
         const menu = document.getElementById('filterMenu');
         menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    toggleBulkActions() {
+        this.showToast('Toplu işlem özelliği yakında eklenecek!', 'info');
     }
 
     handleSearch(query) {
@@ -686,6 +813,19 @@ class ProgramDashboard {
         }
     }
 
+    exportProgramPDF(programId) {
+        const programs = this.getAllPrograms();
+        const program = programs.find(p => p.id === programId);
+
+        if (program && window.pdfExporter) {
+            window.pdfExporter.exportProgram(program);
+        } else if (!window.pdfExporter) {
+            this.showToast('PDF modülü yüklenemedi', 'error');
+        } else {
+            this.showToast('Program bulunamadı', 'error');
+        }
+    }
+
     toggleTaskCompletion(programId, topicName, completed) {
         const programs = this.getAllPrograms();
         const program = programs.find(p => p.id === programId);
@@ -826,13 +966,13 @@ class ProgramDashboard {
 
     renderMonthlyGrid() {
         const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth();
+        const year = this.currentYear;
+        const month = this.currentMonth;
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        const dayNames = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+        const dayNames = ['Paz', 'Pzt', 'Sal', 'Car', 'Per', 'Cum', 'Cmt'];
 
         let html = '<div class="month-header">';
         dayNames.forEach(day => {
@@ -842,19 +982,23 @@ class ProgramDashboard {
 
         html += '<div class="month-days">';
 
-        // Boş günler (ayın başlangıcından önceki)
+        // Bos gunler (ayin baslangicından onceki)
         for (let i = 0; i < firstDay; i++) {
             html += '<div class="month-day empty"></div>';
         }
 
-        // Günler
+        // Gunler
         for (let day = 1; day <= daysInMonth; day++) {
-            const isToday = day === today.getDate();
+            const isToday = day === today.getDate() &&
+                            month === today.getMonth() &&
+                            year === today.getFullYear();
+            const tasksCount = this.getTasksForDay(year, month, day);
+
             html += `
-                <div class="month-day ${isToday ? 'today' : ''}">
+                <div class="month-day ${isToday ? 'today' : ''}" onclick="programDashboard.showDayDetail(${year}, ${month}, ${day})">
                     <span class="day-number">${day}</span>
                     <div class="day-tasks">
-                        ${this.getTasksForDay(day) > 0 ? `<span class="task-dot">${this.getTasksForDay(day)}</span>` : ''}
+                        ${tasksCount > 0 ? `<span class="task-dot">${tasksCount}</span>` : ''}
                     </div>
                 </div>
             `;
@@ -864,17 +1008,57 @@ class ProgramDashboard {
         return html;
     }
 
-    getTasksForDay(day) {
-        // Mock data - gerçek veriyle değiştirilecek
-        return day % 3 === 0 ? Math.floor(Math.random() * 3) + 1 : 0;
+    getTasksForDay(year, month, day) {
+        // Programlardan o gune ait gorev sayisini hesapla
+        const programs = this.getAllPrograms();
+        let taskCount = 0;
+
+        programs.forEach(program => {
+            if (program.schedule && program.schedule.days) {
+                const dayDate = new Date(year, month, day);
+                const dayOfWeek = dayDate.getDay();
+                const dayNames = ['pazar', 'pazartesi', 'sali', 'carsamba', 'persembe', 'cuma', 'cumartesi'];
+
+                if (program.schedule.days.includes(dayNames[dayOfWeek])) {
+                    taskCount++;
+                }
+            }
+        });
+
+        return taskCount;
+    }
+
+    showDayDetail(year, month, day) {
+        const date = new Date(year, month, day);
+        const dateStr = date.toLocaleDateString('tr-TR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        this.showToast(`${dateStr} - Detay gorunumu yakin zamanda eklenecek`, 'info');
     }
 
     navigateDay(offset) {
-        this.showToast('Gün navigasyonu geliştirme aşamasında', 'info');
+        this.showToast('Gun navigasyonu gelistirme asamasinda', 'info');
     }
 
     navigateMonth(offset) {
-        this.showToast('Ay navigasyonu geliştirme aşamasında', 'info');
+        this.currentMonth += offset;
+
+        if (this.currentMonth > 11) {
+            this.currentMonth = 0;
+            this.currentYear++;
+        } else if (this.currentMonth < 0) {
+            this.currentMonth = 11;
+            this.currentYear--;
+        }
+
+        // Takvimi yeniden render et
+        const calendarContent = this.panel.querySelector('.tab-content[data-tab="calendar"]');
+        if (calendarContent) {
+            calendarContent.innerHTML = this.renderCalendarTab();
+        }
     }
 
     // ==================== SETTINGS ACTIONS ====================

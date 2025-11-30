@@ -276,6 +276,90 @@ class NotificationManager {
     return response.json();
   }
 
+  // ==================== GÜNLÜK HATIRLATMA ====================
+
+  /**
+   * Günlük çalışma hatırlatması ayarla
+   * @param {string} time - Saat formatında (HH:MM)
+   */
+  setDailyReminder(time = '20:00') {
+    const settings = this.getSettings();
+    settings.dailyReminderTime = time;
+    settings.dailyReminderEnabled = true;
+    this.saveSettings(settings);
+
+    this.scheduleDailyReminder(time);
+    console.log(`📅 Günlük hatırlatma ${time} için ayarlandı`);
+  }
+
+  disableDailyReminder() {
+    const settings = this.getSettings();
+    settings.dailyReminderEnabled = false;
+    this.saveSettings(settings);
+
+    // Timer'ı temizle
+    if (this.dailyReminderTimeout) {
+      clearTimeout(this.dailyReminderTimeout);
+      this.dailyReminderTimeout = null;
+    }
+
+    console.log('📅 Günlük hatırlatma devre dışı');
+  }
+
+  scheduleDailyReminder(time) {
+    // Mevcut timer'ı temizle
+    if (this.dailyReminderTimeout) {
+      clearTimeout(this.dailyReminderTimeout);
+    }
+
+    const [hours, minutes] = time.split(':').map(Number);
+    const now = new Date();
+    let targetTime = new Date();
+    targetTime.setHours(hours, minutes, 0, 0);
+
+    // Eğer hedef saat geçtiyse, yarın için ayarla
+    if (targetTime <= now) {
+      targetTime.setDate(targetTime.getDate() + 1);
+    }
+
+    const delay = targetTime - now;
+
+    this.dailyReminderTimeout = setTimeout(() => {
+      this.showDailyReminderNotification();
+      // Bir sonraki gün için tekrar zamanla
+      this.scheduleDailyReminder(time);
+    }, delay);
+
+    console.log(`⏰ Sonraki hatırlatma: ${targetTime.toLocaleString()}`);
+  }
+
+  showDailyReminderNotification() {
+    const messages = [
+      'Bugün çalışmayı unutma! Hedeflerine ulaşmak için şimdi başla.',
+      'Günlük çalışma vakti geldi! Her gün küçük adımlar, büyük başarılar.',
+      'Merhaba! Bugün de çalışmaya ne dersin? Disiplin başarının anahtarı.',
+      'Çalışma zamanı! 25 dakikalık bir Pomodoro ile başla.',
+      'Hedeflerine bir adım daha yaklaş. Bugün çalışmaya başla!'
+    ];
+
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+    this.showNotification('📚 Çalışma Hatırlatması', {
+      body: randomMessage,
+      data: { type: 'daily-reminder' },
+      tag: 'daily-reminder',
+      requireInteraction: true
+    });
+  }
+
+  // Uygulama başladığında günlük hatırlatmayı kontrol et
+  initDailyReminder() {
+    const settings = this.getSettings();
+    if (settings.dailyReminderEnabled && settings.dailyReminderTime) {
+      this.scheduleDailyReminder(settings.dailyReminderTime);
+    }
+  }
+
   // ==================== AYARLAR ====================
 
   getSettings() {
@@ -286,6 +370,8 @@ class NotificationManager {
       breakReminders: true,
       motivational: true,
       dailySummary: true,
+      dailyReminderEnabled: false,
+      dailyReminderTime: '20:00',
       sound: true,
       vibrate: true
     };
@@ -300,9 +386,10 @@ class NotificationManager {
 // Global instance oluştur
 window.notificationManager = new NotificationManager();
 
-// Sayfa yüklendiğinde bekleyen bildirimleri kontrol et
+// Sayfa yüklendiğinde bekleyen bildirimleri ve günlük hatırlatmayı kontrol et
 window.addEventListener('load', () => {
   setTimeout(() => {
     window.notificationManager.checkPendingNotifications();
+    window.notificationManager.initDailyReminder();
   }, 1000);
 });

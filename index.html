@@ -8,34 +8,41 @@
     <!-- PWA Meta Tags -->
     <meta name="description" content="Kişiselleştirilmiş çalışma programları oluştur, kaynak keşfet, ilerlemeni takip et!">
     <meta name="theme-color" content="#667eea">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="StudyPlan">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
 
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="program-panel-styles.css">
-    <link rel="stylesheet" href="wizard-styles.css">
-    <link rel="stylesheet" href="magnetic-tilt.css">
-    <link rel="stylesheet" href="settings-panel.css">
-    <link rel="stylesheet" href="program-dashboard.css">
-    <link rel="stylesheet" href="session-styles.css">
-    <link rel="stylesheet" href="timer-styles.css">
-    <link rel="stylesheet" href="daily-log-styles.css">
-    <link rel="stylesheet" href="badges-styles.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/program-panel-styles.css">
+    <link rel="stylesheet" href="css/wizard-styles.css">
+    <link rel="stylesheet" href="css/magnetic-tilt.css">
+    <link rel="stylesheet" href="css/settings-panel.css">
+    <link rel="stylesheet" href="css/program-dashboard.css">
+    <link rel="stylesheet" href="css/session-styles.css">
+    <link rel="stylesheet" href="css/timer-styles.css">
+    <link rel="stylesheet" href="css/daily-log-styles.css">
+    <link rel="stylesheet" href="css/badges-styles.css">
+    <link rel="stylesheet" href="css/theme-styles.css">
+    <link rel="stylesheet" href="css/notification-dialog.css">
+    <link rel="stylesheet" href="css/calendar-view.css">
 
-    <!-- EmailJS Library -->
+    <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
-    <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <link rel="stylesheet" href="notification-dialog.css">
-    <link rel="stylesheet" href="calendar-view.css">
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Loading Spinner (early load) -->
+    <script src="js/loading-spinner.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -186,47 +193,57 @@
     </div>
 
     <!-- Core Modules -->
-    <script src="version.js"></script>
-    <script src="user-manager.js"></script>
-    <script src="resources-db.js"></script>
-    <script src="study-tracker.js"></script>
+    <script src="js/version.js"></script>
+    <script src="js/user-manager.js"></script>
+    <script src="js/resources-db.js"></script>
+    <script src="js/study-tracker.js"></script>
 
     <!-- Features -->
-    <script src="notification-manager.js"></script>
-    <script src="calendar-view.js"></script>
-    <script src="program-wizard.js"></script>
-    <script src="session-manager.js"></script>
-    <script src="pomodoro-timer.js"></script>
-    <script src="daily-log-viewer.js"></script>
-    <script src="badges-system.js"></script>
-    <script src="magnetic-tilt.js"></script>
+    <script src="js/notification-manager.js"></script>
+    <script src="js/calendar-view.js"></script>
+    <script src="js/program-wizard.js"></script>
+    <script src="js/session-manager.js"></script>
+    <script src="js/pomodoro-timer.js"></script>
+    <script src="js/daily-log-viewer.js"></script>
+    <script src="js/badges-system.js"></script>
+    <script src="js/magnetic-tilt.js"></script>
 
     <!-- Update & Error Management -->
-    <script src="error-logger.js"></script>
-    <script src="email-notifier.js"></script>
-    <script src="telegram-notifier.js"></script>
-    <script src="telegram-bot.js"></script>
-    <script src="settings-panel.js"></script>
-    <script src="program-dashboard.js"></script>
-    <script src="update-manager.js"></script>
+    <script src="js/error-logger.js"></script>
+    <script src="js/email-notifier.js"></script>
+    <script src="js/telegram-notifier.js"></script>
+    <script src="js/telegram-bot.js"></script>
+    <script src="js/settings-panel.js"></script>
+    <script src="js/program-dashboard.js"></script>
+    <script src="js/update-manager.js"></script>
+
+    <!-- Theme Manager -->
+    <script src="js/theme-manager.js"></script>
+
+    <!-- Motivational Quotes -->
+    <script src="js/motivational-quotes.js"></script>
+
+    <!-- PDF Export -->
+    <script src="js/pdf-export.js"></script>
+
+    <!-- Feedback Form -->
+    <script src="js/feedback-form.js"></script>
 
     <!-- Main App -->
-    <script src="app.js"></script>
+    <script src="js/app.js"></script>
 
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator && location.protocol !== 'file:') {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                     .then(registration => {
-                        console.log('✅ Service Worker kayıtlı:', registration.scope);
+                        console.log('Service Worker registered:', registration.scope);
                     })
                     .catch(error => {
-                        console.log('❌ Service Worker kaydı başarısız:', error);
+                        console.log('Service Worker registration failed:', error);
                     });
             });
-        } else if (location.protocol === 'file:') {
-            console.log('ℹ️ Development mode (file://): Service Worker registration atlandı');
         }
     </script>
 </body>

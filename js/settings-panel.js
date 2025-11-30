@@ -131,6 +131,7 @@ class SettingsPanel {
 
     renderPreferencesTab() {
         const prefs = window.userManager ? window.userManager.profile.preferences : {};
+        const notifSettings = window.notificationManager ? window.notificationManager.getSettings() : {};
 
         return `
             <div class="tab-section">
@@ -176,6 +177,29 @@ class SettingsPanel {
                 </div>
 
                 <button class="btn-primary" onclick="settingsPanel.savePreferences()">💾 Tercihleri Kaydet</button>
+            </div>
+
+            <div class="tab-section">
+                <h3>⏰ Günlük Hatırlatma</h3>
+
+                <div class="info-box">
+                    <p>Her gün belirlediğin saatte çalışma hatırlatması al.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Günlük Hatırlatma Aktif</label>
+                    <label class="switch">
+                        <input type="checkbox" id="dailyReminderEnabled" ${notifSettings.dailyReminderEnabled ? 'checked' : ''} onchange="settingsPanel.toggleDailyReminder(this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Hatırlatma Saati</label>
+                    <input type="time" id="dailyReminderTime" value="${notifSettings.dailyReminderTime || '20:00'}">
+                </div>
+
+                <button class="btn-secondary" onclick="settingsPanel.saveDailyReminder()">💾 Hatırlatmayı Kaydet</button>
             </div>
         `;
     }
@@ -512,6 +536,36 @@ class SettingsPanel {
             } else {
                 window.telegramBot.stopPolling();
                 this.showToast('⏹️ Bot polling durduruldu', 'info');
+            }
+        }
+    }
+
+    // ==================== DAILY REMINDER ACTIONS ====================
+
+    toggleDailyReminder(enabled) {
+        if (window.notificationManager) {
+            if (enabled) {
+                const time = document.getElementById('dailyReminderTime').value || '20:00';
+                window.notificationManager.setDailyReminder(time);
+                this.showToast(`✅ Günlük hatırlatma ${time} için ayarlandı!`, 'success');
+            } else {
+                window.notificationManager.disableDailyReminder();
+                this.showToast('⏹️ Günlük hatırlatma kapatıldı', 'info');
+            }
+        }
+    }
+
+    saveDailyReminder() {
+        const enabled = document.getElementById('dailyReminderEnabled').checked;
+        const time = document.getElementById('dailyReminderTime').value;
+
+        if (window.notificationManager) {
+            if (enabled) {
+                window.notificationManager.setDailyReminder(time);
+                this.showToast(`✅ Hatırlatma ${time} için kaydedildi!`, 'success');
+            } else {
+                window.notificationManager.disableDailyReminder();
+                this.showToast('⏹️ Hatırlatma kapatıldı', 'info');
             }
         }
     }
