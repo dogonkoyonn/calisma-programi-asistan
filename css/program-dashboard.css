@@ -20,6 +20,9 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+    /* GPU hızlandırma - blur performansı için */
+    transform: translateZ(0);
+    will-change: opacity;
 }
 
 .dashboard-container {
@@ -109,6 +112,10 @@
     overflow-y: auto;
     padding: 32px;
     background: var(--bg-primary, #f5f7fa);
+    /* Scroll performans optimizasyonu */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    will-change: scroll-position;
 }
 
 .tab-content {

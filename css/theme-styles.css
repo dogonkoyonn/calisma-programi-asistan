@@ -472,13 +472,19 @@ textarea:focus {
   margin-top: auto;
 }
 
-/* Smooth Transitions */
-*,
-*::before,
-*::after {
+/* Smooth Transitions - Sadece belirli elementlere uygula (performans icin) */
+.sidebar,
+.sidebar-btn,
+.card,
+.program-card,
+.btn-primary,
+.btn-secondary,
+.btn-action,
+.tab-button,
+.modal-overlay,
+.dashboard-container {
   transition: background-color 0.3s ease,
               border-color 0.3s ease,
-              color 0.2s ease,
               box-shadow 0.3s ease;
 }
 
