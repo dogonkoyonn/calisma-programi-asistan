@@ -33,11 +33,18 @@
     <!-- Yeni stiller -->
     <link rel="stylesheet" href="css/hamburger-menu.css">
     <link rel="stylesheet" href="css/todo-styles.css">
+    <link rel="stylesheet" href="css/auth-styles.css">
 
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -327,6 +334,80 @@
             </button>
         </div>
     </div>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">✨</div>
+                <h2>Life Manager</h2>
+                <p>Hayatını organize etmeye başla</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login" onclick="authManager.switchTab('login')">Giriş Yap</button>
+                <button class="auth-tab" data-tab="register" onclick="authManager.switchTab('register')">Kayıt Ol</button>
+            </div>
+
+            <div class="auth-content">
+                <!-- Login Form -->
+                <form class="auth-form active" id="loginForm" onsubmit="handleLoginSubmit(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">E-posta</label>
+                        <input type="email" id="loginEmail" placeholder="ornek@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Şifre</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#" onclick="authManager.showResetPassword(); return false;">Şifremi unuttum</a>
+                    </div>
+                    <div class="auth-error"></div>
+                    <button type="submit" class="btn-primary">Giriş Yap</button>
+                </form>
+
+                <!-- Register Form -->
+                <form class="auth-form" id="registerForm" onsubmit="handleRegisterSubmit(event)">
+                    <div class="form-group">
+                        <label for="registerName">Ad Soyad</label>
+                        <input type="text" id="registerName" placeholder="Adınız Soyadınız" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">E-posta</label>
+                        <input type="email" id="registerEmail" placeholder="ornek@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Şifre</label>
+                        <input type="password" id="registerPassword" placeholder="En az 6 karakter" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Şifre Tekrar</label>
+                        <input type="password" id="registerConfirmPassword" placeholder="Şifrenizi tekrar girin" required>
+                    </div>
+                    <div class="auth-error"></div>
+                    <button type="submit" class="btn-primary">Kayıt Ol</button>
+                </form>
+
+                <!-- Reset Password Form -->
+                <form class="auth-form" id="resetPasswordForm" onsubmit="handleResetPasswordSubmit(event)">
+                    <div class="form-group">
+                        <label for="resetEmail">E-posta</label>
+                        <input type="email" id="resetEmail" placeholder="ornek@email.com" required>
+                    </div>
+                    <div class="auth-error"></div>
+                    <button type="submit" class="btn-primary">Şifre Sıfırlama Linki Gönder</button>
+                    <div class="back-link">
+                        <a href="#" onclick="authManager.switchTab('login'); return false;">← Giriş sayfasına dön</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Config (İlk yüklenmeli) -->
+    <script src="js/core/firebase-config.js"></script>
+    <script src="js/core/auth-manager.js"></script>
 
     <!-- Core Modules (Yeni) -->
     <script src="js/core/data-manager.js"></script>
