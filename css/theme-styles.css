@@ -726,3 +726,194 @@ textarea:focus {
     max-width: 100%;
   }
 }
+
+/* ==================== DARK MODE - LIFE MANAGER FIX ==================== */
+
+/* Dark mode sidebar */
+[data-theme="dark"] .sidebar {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+}
+
+/* Dark mode navigasyon butonları */
+[data-theme="dark"] .nav-item {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .nav-item.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Dark mode today summary widget */
+[data-theme="dark"] .today-summary-widget {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .today-summary-widget h4 {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .mini-task-item {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .mini-task-empty {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Dark mode hamburger menu */
+[data-theme="dark"] .hamburger-menu-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .hamburger-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .hamburger-menu {
+  background: #1e1e2e;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .hamburger-menu .menu-item {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .hamburger-menu .menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .hamburger-menu .menu-divider {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode sidebar footer */
+[data-theme="dark"] .sidebar-footer .status {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Dark mode home dashboard */
+[data-theme="dark"] .home-dashboard {
+  background: var(--bg-primary);
+}
+
+[data-theme="dark"] .greeting h1 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .greeting p {
+  color: var(--text-secondary);
+}
+
+/* Dark mode summary cards */
+[data-theme="dark"] .summary-card {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .summary-card:hover {
+  border-color: var(--primary-color);
+}
+
+/* Dark mode section headers */
+[data-theme="dark"] .section-header h3 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-see-all {
+  color: var(--primary-color);
+}
+
+/* Dark mode empty states */
+[data-theme="dark"] .empty-state {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .empty-state p {
+  color: var(--text-secondary);
+}
+
+/* Dark mode home task items */
+[data-theme="dark"] .home-task-item {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .home-task-item:hover {
+  background: var(--bg-tertiary);
+}
+
+/* Dark mode quick add menu */
+[data-theme="dark"] .quick-add-menu {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .quick-add-item {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .quick-add-item:hover {
+  background: var(--bg-tertiary);
+}
+
+/* Dark mode TODO styles */
+[data-theme="dark"] .todo-item {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .todo-item:hover {
+  background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .todo-modal {
+  background: var(--bg-card);
+}
+
+[data-theme="dark"] .todo-modal-header {
+  border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .todo-modal-footer {
+  background: var(--bg-tertiary);
+  border-top-color: var(--border-color);
+}
+
+/* Dark mode form elements */
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-add-reminder {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+/* Dark mode logo text */
+[data-theme="dark"] .logo-text h2 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .logo-text span {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Dark mode content area */
+[data-theme="dark"] .content-area {
+  background: var(--bg-primary);
+}

@@ -294,6 +294,118 @@
   border-top: 1px solid var(--border-light);
 }
 
+/* ==================== FLOATING MENU (Sol Alt Köşe) ==================== */
+
+.floating-menu-container {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10000;
+}
+
+.floating-menu-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+}
+
+.floating-menu-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.floating-menu-btn .menu-icon {
+  font-size: 24px;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.floating-menu-container.active .floating-menu-btn .menu-icon {
+  transform: rotate(90deg);
+}
+
+.floating-menu {
+  position: absolute;
+  bottom: 70px;
+  left: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.floating-menu-container.active .floating-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.floating-menu .menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.floating-menu .menu-item:first-child {
+  border-radius: 12px 12px 0 0;
+}
+
+.floating-menu .menu-item:last-child {
+  border-radius: 0 0 12px 12px;
+}
+
+.floating-menu .menu-item:hover {
+  background: var(--bg-tertiary);
+}
+
+.floating-menu .menu-item .icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.floating-menu .menu-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: 4px 0;
+}
+
+/* Dark mode için floating menu */
+[data-theme="dark"] .floating-menu {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .floating-menu .menu-item {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .floating-menu .menu-item:hover {
+  background: var(--bg-tertiary);
+}
+
 /* ==================== RESPONSIVE ==================== */
 
 @media (max-width: 768px) {

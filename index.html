@@ -104,38 +104,6 @@
             </div>
 
             <div class="sidebar-footer">
-                <!-- Hamburger Menu -->
-                <div class="sidebar-hamburger">
-                    <button class="hamburger-menu-btn" id="hamburgerMenuBtn">
-                        <span class="menu-icon">☰</span>
-                        <span>Diğer</span>
-                        <span class="menu-arrow">▲</span>
-                    </button>
-                    <div class="hamburger-menu" id="hamburgerMenu">
-                        <button class="menu-item" onclick="settingsPanel.open(); toggleHamburgerMenu();">
-                            <span class="icon">⚙️</span>
-                            <span>Ayarlar</span>
-                        </button>
-                        <button class="menu-item" onclick="exportAllData(); toggleHamburgerMenu();">
-                            <span class="icon">📥</span>
-                            <span>Dışa Aktar</span>
-                        </button>
-                        <button class="menu-item" onclick="importDataDialog(); toggleHamburgerMenu();">
-                            <span class="icon">📤</span>
-                            <span>İçe Aktar</span>
-                        </button>
-                        <div class="menu-divider"></div>
-                        <button class="menu-item" onclick="showFeedbackForm(); toggleHamburgerMenu();">
-                            <span class="icon">💬</span>
-                            <span>Geri Bildirim</span>
-                        </button>
-                        <button class="menu-item" onclick="showHelp(); toggleHamburgerMenu();">
-                            <span class="icon">❓</span>
-                            <span>Yardım</span>
-                        </button>
-                    </div>
-                </div>
-
                 <div class="status">
                     <div class="status-dot" style="background: #4CAF50;"></div>
                     <span>v3.0 - Life Manager</span>
@@ -330,6 +298,36 @@
         </button>
     </div>
 
+    <!-- Diğer Butonu (Sol Alt Köşe) -->
+    <div class="floating-menu-container" id="floatingMenuContainer">
+        <button class="floating-menu-btn" id="floatingMenuBtn" onclick="toggleFloatingMenu()">
+            <span class="menu-icon">☰</span>
+        </button>
+        <div class="floating-menu" id="floatingMenu">
+            <button class="menu-item" onclick="settingsPanel.open(); toggleFloatingMenu();">
+                <span class="icon">⚙️</span>
+                <span>Ayarlar</span>
+            </button>
+            <button class="menu-item" onclick="exportAllData(); toggleFloatingMenu();">
+                <span class="icon">📥</span>
+                <span>Dışa Aktar</span>
+            </button>
+            <button class="menu-item" onclick="importDataDialog(); toggleFloatingMenu();">
+                <span class="icon">📤</span>
+                <span>İçe Aktar</span>
+            </button>
+            <div class="menu-divider"></div>
+            <button class="menu-item" onclick="showFeedbackForm(); toggleFloatingMenu();">
+                <span class="icon">💬</span>
+                <span>Geri Bildirim</span>
+            </button>
+            <button class="menu-item" onclick="showHelp(); toggleFloatingMenu();">
+                <span class="icon">❓</span>
+                <span>Yardım</span>
+            </button>
+        </div>
+    </div>
+
     <!-- Core Modules (Yeni) -->
     <script src="js/core/data-manager.js"></script>
     <script src="js/core/category-manager.js"></script>
@@ -364,9 +362,6 @@
 
     <!-- Theme Manager -->
     <script src="js/theme-manager.js"></script>
-
-    <!-- Motivational Quotes -->
-    <script src="js/motivational-quotes.js"></script>
 
     <!-- PDF Export -->
     <script src="js/pdf-export.js"></script>

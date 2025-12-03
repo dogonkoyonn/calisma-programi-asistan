@@ -696,6 +696,33 @@ class App {
     }
 }
 
+// ==================== FLOATING MENU ====================
+
+function toggleFloatingMenu() {
+    const container = document.getElementById('floatingMenuContainer');
+    if (container) {
+        container.classList.toggle('active');
+    }
+}
+
+// Dışarı tıklandığında menüyü kapat
+document.addEventListener('click', (e) => {
+    const container = document.getElementById('floatingMenuContainer');
+    if (container && !container.contains(e.target)) {
+        container.classList.remove('active');
+    }
+});
+
+// ESC tuşuyla menüyü kapat
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const container = document.getElementById('floatingMenuContainer');
+        if (container) {
+            container.classList.remove('active');
+        }
+    }
+});
+
 // ==================== BAŞLAT ====================
 
 let app;
