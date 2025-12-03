@@ -1,7 +1,7 @@
 // ==================== SERVICE WORKER - PWA ====================
 // Offline support & caching strategy
 
-const VERSION = '3.1.0';
+const VERSION = '3.2.0';
 const CACHE_NAME = `lifemanager-v${VERSION}`;
 const DYNAMIC_CACHE = `lifemanager-dynamic-v${VERSION}`;
 
@@ -30,9 +30,11 @@ const urlsToCache = [
   BASE + '/css/hamburger-menu.css',
   BASE + '/css/todo-styles.css',
   BASE + '/css/auth-styles.css',
+  BASE + '/css/onboarding-styles.css',
   // JS - Core (Firebase & Auth)
   BASE + '/js/core/firebase-config.js',
   BASE + '/js/core/auth-manager.js',
+  BASE + '/js/core/onboarding-manager.js',
   BASE + '/js/core/data-manager.js',
   BASE + '/js/core/category-manager.js',
   // JS - Features

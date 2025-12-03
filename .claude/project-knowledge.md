@@ -2,7 +2,7 @@
 
 > Bu dosya Claude tarafından sürekli güncellenir. Proje hakkında tüm kritik bilgileri içerir.
 
-**Son Güncelleme:** 2025-12-04 (Firebase Entegrasyonu)
+**Son Güncelleme:** 2025-12-04 (Onboarding Wizard)
 
 ---
 
@@ -59,14 +59,19 @@ calisma-programi-asistan-v2/
 │   ├── program-panel-styles.css
 │   ├── program-dashboard.css
 │   ├── notification-dialog.css
-│   └── magnetic-tilt.css      # Animasyon efektleri
+│   ├── magnetic-tilt.css      # Animasyon efektleri
+│   ├── auth-styles.css        # Kimlik doğrulama stilleri
+│   └── onboarding-styles.css  # Yeni kullanıcı wizard stilleri
 │
 ├── js/
 │   ├── app.js                 # Ana uygulama (StudyProgramManager, App class)
 │   │
 │   ├── core/                  # Çekirdek modüller
 │   │   ├── data-manager.js    # Merkezi veri yönetimi, migration
-│   │   └── category-manager.js # Kategori navigasyonu
+│   │   ├── category-manager.js # Kategori navigasyonu
+│   │   ├── firebase-config.js # Firebase yapılandırması
+│   │   ├── auth-manager.js    # Kimlik doğrulama yönetimi
+│   │   └── onboarding-manager.js # Yeni kullanıcı wizard
 │   │
 │   ├── features/              # Özellik modülleri
 │   │   └── todo-manager.js    # TODO sistemi
@@ -171,10 +176,10 @@ calisma-programi-asistan-v2/
 | Görev | Durum | Öncelik |
 |-------|-------|---------|
 | Proje veritabanı oluştur | ✅ Tamamlandı | P0 |
-| Firebase Console kurulum | ⏳ Bekliyor | P1 |
-| firebase-config.js | ⏳ Bekliyor | P1 |
-| auth-manager.js | ⏳ Bekliyor | P1 |
-| Onboarding wizard | ⏳ Bekliyor | P2 |
+| Firebase Console kurulum | ✅ Tamamlandı | P1 |
+| firebase-config.js | ✅ Tamamlandı | P1 |
+| auth-manager.js | ✅ Tamamlandı | P1 |
+| Onboarding wizard | ✅ Tamamlandı | P2 |
 | sync-manager.js | ⏳ Bekliyor | P2 |
 | Security rules | ⏳ Bekliyor | P2 |
 | Offline sync | ⏳ Bekliyor | P3 |
@@ -240,6 +245,13 @@ expenses/{userId}
 ---
 
 ## 11. Değişiklik Günlüğü
+
+### 2025-12-04 (Gece - Onboarding)
+- [x] onboarding-manager.js oluşturuldu
+- [x] onboarding-styles.css oluşturuldu
+- [x] Onboarding modal HTML eklendi
+- [x] Service Worker v3.2.0'a güncellendi
+- [x] 4 adımlı wizard: Hoşgeldin, Profil, Kategoriler, Örnek Veri
 
 ### 2025-12-04 (Akşam - Firebase)
 - [x] Firebase projesi oluşturuldu (life-manager-app-9c1f7)

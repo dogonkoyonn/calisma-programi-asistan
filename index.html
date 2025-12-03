@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="css/hamburger-menu.css">
     <link rel="stylesheet" href="css/todo-styles.css">
     <link rel="stylesheet" href="css/auth-styles.css">
+    <link rel="stylesheet" href="css/onboarding-styles.css">
 
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -405,9 +406,23 @@
         </div>
     </div>
 
+    <!-- Onboarding Modal -->
+    <div class="onboarding-modal" id="onboardingModal">
+        <div class="onboarding-container">
+            <div class="onboarding-progress">
+                <div class="onboarding-progress-fill"></div>
+                <span class="onboarding-progress-text">1 / 4</span>
+            </div>
+            <div id="onboardingContent">
+                <!-- Wizard adımları buraya render edilecek -->
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase Config (İlk yüklenmeli) -->
     <script src="js/core/firebase-config.js"></script>
     <script src="js/core/auth-manager.js"></script>
+    <script src="js/core/onboarding-manager.js"></script>
 
     <!-- Core Modules (Yeni) -->
     <script src="js/core/data-manager.js"></script>
