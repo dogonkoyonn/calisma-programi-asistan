@@ -1,9 +1,9 @@
 // ==================== SERVICE WORKER - PWA ====================
 // Offline support & caching strategy
 
-const VERSION = '2.5.2';
-const CACHE_NAME = `studyplan-v${VERSION}`;
-const DYNAMIC_CACHE = `studyplan-dynamic-v${VERSION}`;
+const VERSION = '3.0.0';
+const CACHE_NAME = `lifemanager-v${VERSION}`;
+const DYNAMIC_CACHE = `lifemanager-dynamic-v${VERSION}`;
 
 // Base URL - GitHub Pages subdirectory desteği
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
@@ -27,7 +27,14 @@ const urlsToCache = [
   BASE + '/css/notification-dialog.css',
   BASE + '/css/calendar-view.css',
   BASE + '/css/magnetic-tilt.css',
-  // JS
+  BASE + '/css/hamburger-menu.css',
+  BASE + '/css/todo-styles.css',
+  // JS - Core
+  BASE + '/js/core/data-manager.js',
+  BASE + '/js/core/category-manager.js',
+  // JS - Features
+  BASE + '/js/features/todo-manager.js',
+  // JS - App
   BASE + '/js/app.js',
   BASE + '/js/version.js',
   BASE + '/js/user-manager.js',
