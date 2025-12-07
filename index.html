@@ -36,6 +36,8 @@
     <link rel="stylesheet" href="css/auth-styles.css">
     <link rel="stylesheet" href="css/onboarding-styles.css">
     <link rel="stylesheet" href="css/sync-indicator.css">
+    <link rel="stylesheet" href="css/health-styles.css">
+    <link rel="stylesheet" href="css/expense-styles.css">
 
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -254,20 +256,89 @@
 
                 <!-- Expenses Content -->
                 <div class="category-content" id="content-expenses" style="display: none;">
-                    <div class="expenses-dashboard">
-                        <div class="section-header">
+                    <div class="expense-container">
+                        <!-- Header -->
+                        <div class="expense-header">
                             <h2>💰 Harcama Takibi</h2>
-                            <button class="btn-primary" onclick="openExpenseModal()">+ Harcama Ekle</button>
+                            <button class="btn-primary" onclick="expenseManager?.showAddModal()">+ Harcama Ekle</button>
                         </div>
-                        <div class="expenses-content" id="expensesContent">
-                            <div class="empty-state">
-                                <div class="empty-icon">💰</div>
-                                <h3>Harcama Takibi</h3>
-                                <p>Gelir ve giderlerinizi buradan takip edin</p>
-                                <button class="btn-primary" onclick="openExpenseModal()">İlk Harcamayı Ekle</button>
+
+                        <!-- Streak Widget -->
+                        <div class="streak-section" id="streakWidget">
+                            <div class="streak-display">
+                                <span class="streak-fire">🔥</span>
+                                <span class="streak-count">0</span>
+                                <span class="streak-label">Gün Streak</span>
+                            </div>
+                            <div class="streak-milestone">İlk harcamanı ekleyerek başla!</div>
+                        </div>
+
+                        <!-- Budget Progress -->
+                        <div class="budget-section" id="budgetProgress">
+                            <div class="budget-empty">
+                                <p>Aylık bütçe belirlenmedi</p>
+                                <button class="btn-small" onclick="expenseManager?.showBudgetModal()">Bütçe Belirle</button>
+                            </div>
+                        </div>
+
+                        <!-- Statistics Cards -->
+                        <div class="stats-row">
+                            <div class="stat-card negative">
+                                <div class="stat-value" id="statExpenses">0₺</div>
+                                <div class="stat-label">Bu Ay Gider</div>
+                            </div>
+                            <div class="stat-card positive">
+                                <div class="stat-value" id="statIncome">0₺</div>
+                                <div class="stat-label">Bu Ay Gelir</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="statBalance">0₺</div>
+                                <div class="stat-label">Net Bakiye</div>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="charts-section">
+                            <div class="chart-card">
+                                <h4>📊 Kategori Dağılımı</h4>
+                                <div class="chart-container">
+                                    <canvas id="categoryChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <h4>📈 Haftalık Trend</h4>
+                                <div class="chart-container">
+                                    <canvas id="weeklyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Transaction List -->
+                        <div class="expense-list-section">
+                            <div class="expense-list-header">
+                                <h3>📋 Son İşlemler</h3>
+                                <a href="#" class="expense-view-all" onclick="expenseManager?.showAllTransactions()">Tümünü Gör</a>
+                            </div>
+                            <div id="expensesList">
+                                <div class="empty-state">
+                                    <span class="empty-icon">💰</span>
+                                    <p>Henüz harcama kaydı yok</p>
+                                    <p class="empty-hint">İlk harcamanı ekleyerek başla!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Badges Section -->
+                        <div class="badges-section">
+                            <h3>🏆 Rozetler</h3>
+                            <div class="badges-grid" id="expenseBadges">
+                                <!-- Rozetler dinamik olarak yüklenecek -->
                             </div>
                         </div>
                     </div>
+
+                    <!-- FAB Button -->
+                    <button class="expense-fab" onclick="expenseManager?.showAddModal()">+</button>
                 </div>
             </main>
 
@@ -424,6 +495,149 @@
         </div>
     </div>
 
+    <!-- Expense Modal -->
+    <div class="expense-modal" id="expenseModal">
+        <div class="expense-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Harcama Ekle</h3>
+                <button class="modal-close" onclick="expenseManager?.hideModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="expenseForm">
+                    <!-- Amount -->
+                    <div class="form-group">
+                        <label>Tutar</label>
+                        <div class="amount-input-wrapper">
+                            <input type="number" name="amount" id="expenseAmount" placeholder="0" step="0.01" required>
+                            <span class="amount-currency">₺</span>
+                        </div>
+                    </div>
+
+                    <!-- Type Toggle -->
+                    <div class="form-group">
+                        <label>İşlem Tipi</label>
+                        <div class="type-toggle">
+                            <label>
+                                <input type="radio" name="type" value="expense" checked>
+                                <span>Gider</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="type" value="income">
+                                <span>Gelir</span>
+                            </label>
+                        </div>
+                        <input type="hidden" name="type" id="expenseType" value="expense">
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <div class="category-grid" id="expenseCategoryButtons">
+                            <!-- Kategori butonları dinamik olarak yüklenecek -->
+                        </div>
+                        <input type="hidden" name="category" id="expenseCategory" value="other">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <input type="text" name="description" id="expenseDescription" placeholder="Ne için harcandı?">
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label>Tarih</label>
+                        <input type="date" name="date" id="expenseDate">
+                    </div>
+
+                    <!-- Quick Templates -->
+                    <div class="quick-templates-section">
+                        <div class="quick-templates-title">Hızlı Şablonlar</div>
+                        <div class="quick-templates" id="expenseQuickTemplates">
+                            <p class="templates-empty">Hızlı şablonlar için harcama ekleyin</p>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="expenseManager?.hideModal()">İptal</button>
+                        <button type="submit" class="btn-submit">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Budget Modal -->
+    <div class="expense-modal budget-modal" id="budgetModal">
+        <div class="expense-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Bütçe Ayarla</h3>
+                <button class="modal-close" onclick="expenseManager?.hideBudgetModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="budgetForm">
+                    <!-- Monthly Budget -->
+                    <div class="form-group">
+                        <label>Aylık Toplam Bütçe</label>
+                        <div class="amount-input-wrapper">
+                            <input type="number" id="monthlyBudget" placeholder="5000" step="100">
+                            <span class="amount-currency">₺</span>
+                        </div>
+                    </div>
+
+                    <!-- Category Budgets -->
+                    <div class="form-group">
+                        <label>Kategori Bütçeleri (Opsiyonel)</label>
+                        <div class="budget-category-list">
+                            <div class="budget-category-item">
+                                <span class="cat-icon">🍔</span>
+                                <label>Yemek</label>
+                                <input type="number" id="budget_food" placeholder="1500">
+                            </div>
+                            <div class="budget-category-item">
+                                <span class="cat-icon">🚗</span>
+                                <label>Ulaşım</label>
+                                <input type="number" id="budget_transport" placeholder="500">
+                            </div>
+                            <div class="budget-category-item">
+                                <span class="cat-icon">🎬</span>
+                                <label>Eğlence</label>
+                                <input type="number" id="budget_entertainment" placeholder="500">
+                            </div>
+                            <div class="budget-category-item">
+                                <span class="cat-icon">📄</span>
+                                <label>Fatura</label>
+                                <input type="number" id="budget_bills" placeholder="1000">
+                            </div>
+                            <div class="budget-category-item">
+                                <span class="cat-icon">🛍️</span>
+                                <label>Alışveriş</label>
+                                <input type="number" id="budget_shopping" placeholder="500">
+                            </div>
+                            <div class="budget-category-item">
+                                <span class="cat-icon">💊</span>
+                                <label>Sağlık</label>
+                                <input type="number" id="budget_health" placeholder="300">
+                            </div>
+                            <div class="budget-category-item">
+                                <span class="cat-icon">📚</span>
+                                <label>Eğitim</label>
+                                <input type="number" id="budget_education" placeholder="200">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="expenseManager?.hideBudgetModal()">İptal</button>
+                        <button type="submit" class="btn-submit">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase Config (İlk yüklenmeli) -->
     <script src="js/core/firebase-config.js"></script>
     <script src="js/core/auth-manager.js"></script>
@@ -436,6 +650,8 @@
 
     <!-- Features (Yeni) -->
     <script src="js/features/todo-manager.js"></script>
+    <script src="js/features/health-manager.js"></script>
+    <script src="js/features/expense-manager.js"></script>
 
     <!-- Core Modules (Mevcut) -->
     <script src="js/version.js"></script>
@@ -637,8 +853,147 @@
                 todoManager.renderTodoList();
             } else if (category === 'study') {
                 renderStudyPrograms();
+            } else if (category === 'expenses') {
+                initExpenseModule();
+            } else if (category === 'health') {
+                initHealthModule();
             }
         });
+
+        // Expense modülünü başlat
+        function initExpenseModule() {
+            if (window.expenseManager) {
+                expenseManager.init();
+                renderExpenseCharts();
+                renderExpenseBadges();
+                updateExpenseStats();
+            }
+        }
+
+        // Health modülünü başlat
+        function initHealthModule() {
+            if (window.healthManager) {
+                healthManager.renderAll();
+            }
+        }
+
+        // Expense Charts
+        let categoryChart = null;
+        let weeklyChart = null;
+
+        function renderExpenseCharts() {
+            if (!window.expenseManager || typeof Chart === 'undefined') return;
+
+            // Kategori dağılımı (Doughnut)
+            const categoryData = expenseManager.getCategoryChartData();
+            const categoryCtx = document.getElementById('categoryChart')?.getContext('2d');
+
+            if (categoryCtx) {
+                if (categoryChart) categoryChart.destroy();
+
+                categoryChart = new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: categoryData.map(d => d.label),
+                        datasets: [{
+                            data: categoryData.map(d => d.value),
+                            backgroundColor: categoryData.map(d => d.color),
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    padding: 8,
+                                    font: { size: 11 }
+                                }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            }
+
+            // Haftalık trend (Bar)
+            const weeklyData = expenseManager.getWeeklyTrend();
+            const weeklyCtx = document.getElementById('weeklyChart')?.getContext('2d');
+
+            if (weeklyCtx) {
+                if (weeklyChart) weeklyChart.destroy();
+
+                weeklyChart = new Chart(weeklyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: weeklyData.map(d => d.dayName),
+                        datasets: [{
+                            data: weeklyData.map(d => d.total),
+                            backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                            borderRadius: 6,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { display: false },
+                                ticks: {
+                                    callback: (val) => val + '₺',
+                                    font: { size: 10 }
+                                }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { size: 10 } }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Expense Badges
+        function renderExpenseBadges() {
+            if (!window.expenseManager) return;
+
+            const container = document.getElementById('expenseBadges');
+            if (!container) return;
+
+            const badges = expenseManager.getAllBadges();
+
+            container.innerHTML = badges.map(badge => `
+                <div class="badge-item ${badge.earned ? 'earned' : ''}">
+                    <span class="badge-icon">${badge.icon}</span>
+                    <span class="badge-name">${badge.name}</span>
+                    <span class="badge-desc">${badge.description}</span>
+                </div>
+            `).join('');
+        }
+
+        // Update Stats
+        function updateExpenseStats() {
+            if (!window.expenseManager) return;
+
+            const stats = expenseManager.getStatistics('month');
+
+            const expEl = document.getElementById('statExpenses');
+            const incEl = document.getElementById('statIncome');
+            const balEl = document.getElementById('statBalance');
+
+            if (expEl) expEl.textContent = expenseManager.formatCurrency(stats.totalExpenses);
+            if (incEl) incEl.textContent = expenseManager.formatCurrency(stats.totalIncome);
+            if (balEl) balEl.textContent = expenseManager.formatCurrency(stats.netBalance);
+        }
 
         // Çalışma programlarını render et
         function renderStudyPrograms() {
@@ -687,7 +1042,9 @@
         }
 
         function openExpenseModal() {
-            alert('Harcama takibi modülü yakında eklenecek!');
+            if (window.expenseManager) {
+                expenseManager.showAddModal();
+            }
         }
 
         function exportAllData() {

@@ -1,0 +1,913 @@
+/* ==================== EXPENSE STYLES ====================
+   Life Manager - Harcama Takibi Stilleri
+   Versiyon: 1.0.0
+   ========================================================== */
+
+/* ==================== VARIABLES ==================== */
+:root {
+    --expense-positive: #2ECC71;
+    --expense-negative: #FF6B6B;
+    --expense-warning: #FFE66D;
+    --expense-card-bg: #ffffff;
+    --expense-border: #e0e0e0;
+    --expense-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --streak-fire: #FF9500;
+    --badge-gold: #FFD700;
+    --badge-silver: #C0C0C0;
+    --badge-bronze: #CD7F32;
+}
+
+[data-theme="dark"] {
+    --expense-card-bg: #2d2d2d;
+    --expense-border: #404040;
+    --expense-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== EXPENSE CONTAINER ==================== */
+.expense-container {
+    padding: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.expense-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.expense-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+/* ==================== ADD BUTTON (FAB) ==================== */
+.expense-fab {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    z-index: 100;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.expense-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+}
+
+.expense-fab:active {
+    transform: scale(0.95);
+}
+
+/* ==================== BUDGET PROGRESS ==================== */
+.budget-section {
+    background: var(--expense-card-bg);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--expense-shadow);
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.budget-remaining {
+    font-weight: 600;
+    color: var(--expense-positive);
+}
+
+.budget-remaining.over {
+    color: var(--expense-negative);
+}
+
+.budget-amounts {
+    margin-bottom: 0.75rem;
+}
+
+.budget-amounts .spent {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.budget-amounts .total {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+.budget-bar {
+    height: 12px;
+    background: var(--expense-border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.budget-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease-out, background-color 0.3s;
+}
+
+.budget-percentage {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.budget-empty {
+    text-align: center;
+    padding: 1rem;
+}
+
+.budget-empty p {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+/* ==================== STREAK WIDGET ==================== */
+.streak-section {
+    background: linear-gradient(135deg, #FF9500 0%, #FF5E3A 100%);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-align: center;
+}
+
+.streak-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.streak-fire {
+    font-size: 2rem;
+    animation: fireGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes fireGlow {
+    0%, 100% { filter: brightness(1); transform: scale(1); }
+    50% { filter: brightness(1.2); transform: scale(1.1); }
+}
+
+.streak-count {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.streak-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.streak-milestone {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+.streak-milestone.legendary {
+    background: rgba(255, 215, 0, 0.3);
+    font-weight: 600;
+}
+
+/* Streak sıfırlandığında */
+.streak-section.zero {
+    background: linear-gradient(135deg, #8E8E93 0%, #636366 100%);
+}
+
+.streak-section.zero .streak-fire {
+    animation: none;
+    opacity: 0.5;
+}
+
+/* ==================== EXPENSE LIST ==================== */
+.expense-list-section {
+    background: var(--expense-card-bg);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--expense-shadow);
+}
+
+.expense-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--expense-border);
+}
+
+.expense-list-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.expense-view-all {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.expense-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--expense-border);
+    transition: background 0.2s;
+}
+
+.expense-item:last-child {
+    border-bottom: none;
+}
+
+.expense-item:hover {
+    background: rgba(0, 0, 0, 0.02);
+    margin: 0 -0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 8px;
+}
+
+[data-theme="dark"] .expense-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.expense-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.expense-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.expense-description {
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.expense-category {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.expense-amount {
+    font-weight: 600;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.expense-amount.negative {
+    color: var(--expense-negative);
+}
+
+.expense-amount.positive {
+    color: var(--expense-positive);
+}
+
+.expense-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+}
+
+.expense-delete {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.expense-item:hover .expense-delete {
+    opacity: 1;
+}
+
+.expense-delete:hover {
+    color: var(--expense-negative);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+/* ==================== EMPTY STATE ==================== */
+.empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    margin: 0.25rem 0;
+}
+
+.empty-hint {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* ==================== MODAL ==================== */
+.expense-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.expense-modal.show {
+    display: flex;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.expense-modal-content {
+    background: var(--expense-card-bg);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--expense-border);
+    position: sticky;
+    top: 0;
+    background: var(--expense-card-bg);
+    z-index: 10;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 1.25rem;
+}
+
+/* ==================== FORM ELEMENTS ==================== */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--expense-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    background: var(--expense-card-bg);
+    color: var(--text-primary);
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-group input[type="number"] {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Amount Input with Currency */
+.amount-input-wrapper {
+    position: relative;
+}
+
+.amount-input-wrapper input {
+    padding-right: 2.5rem;
+}
+
+.amount-currency {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* Type Toggle */
+.type-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--expense-border);
+    padding: 4px;
+    border-radius: 12px;
+}
+
+.type-toggle label {
+    flex: 1;
+    margin: 0;
+}
+
+.type-toggle input {
+    display: none;
+}
+
+.type-toggle span {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+
+.type-toggle input:checked + span {
+    background: var(--expense-card-bg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.type-toggle input[value="expense"]:checked + span {
+    color: var(--expense-negative);
+}
+
+.type-toggle input[value="income"]:checked + span {
+    color: var(--expense-positive);
+}
+
+/* ==================== CATEGORY BUTTONS ==================== */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.category-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0.5rem;
+    border: 2px solid var(--expense-border);
+    border-radius: 12px;
+    background: var(--expense-card-bg);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.category-btn:hover {
+    border-color: var(--cat-color, var(--primary-color));
+    background: color-mix(in srgb, var(--cat-color, var(--primary-color)) 10%, transparent);
+}
+
+.category-btn.selected {
+    border-color: var(--cat-color, var(--primary-color));
+    background: color-mix(in srgb, var(--cat-color, var(--primary-color)) 15%, transparent);
+}
+
+.category-btn .cat-icon {
+    font-size: 1.5rem;
+}
+
+.category-btn .cat-name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.category-btn.selected .cat-name {
+    color: var(--cat-color, var(--primary-color));
+}
+
+/* ==================== QUICK TEMPLATES ==================== */
+.quick-templates-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--expense-border);
+}
+
+.quick-templates-title {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.quick-templates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.quick-template {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--expense-border);
+    border-radius: 20px;
+    background: var(--expense-card-bg);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-template:hover {
+    border-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.templates-empty {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ==================== FORM BUTTONS ==================== */
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.btn-cancel,
+.btn-submit {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel {
+    background: var(--expense-border);
+    border: none;
+    color: var(--text-primary);
+}
+
+.btn-cancel:hover {
+    background: #d0d0d0;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    color: white;
+}
+
+.btn-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* ==================== CHARTS SECTION ==================== */
+.charts-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 600px) {
+    .charts-section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.chart-card {
+    background: var(--expense-card-bg);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: var(--expense-shadow);
+}
+
+.chart-card h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 200px;
+}
+
+/* ==================== BADGES SECTION ==================== */
+.badges-section {
+    background: var(--expense-card-bg);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--expense-shadow);
+}
+
+.badges-section h3 {
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+}
+
+.badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    border-radius: 12px;
+    background: var(--expense-border);
+    transition: all 0.2s;
+}
+
+.badge-item.earned {
+    background: linear-gradient(135deg, #FFD70020, #FF950020);
+}
+
+.badge-item:not(.earned) {
+    opacity: 0.4;
+    filter: grayscale(1);
+}
+
+.badge-icon {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+}
+
+.badge-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.badge-desc {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* ==================== STATISTICS CARDS ==================== */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: var(--expense-card-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--expense-shadow);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.stat-card.positive .stat-value {
+    color: var(--expense-positive);
+}
+
+.stat-card.negative .stat-value {
+    color: var(--expense-negative);
+}
+
+/* ==================== CONFETTI ANIMATION ==================== */
+@keyframes confettiDrop {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: fixed;
+    pointer-events: none;
+    animation: confettiDrop 3s ease-out forwards;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 480px) {
+    .expense-container {
+        padding: 0.75rem;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .expense-item {
+        gap: 0.5rem;
+    }
+
+    .expense-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .expense-date {
+        display: none;
+    }
+
+    .badges-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ==================== BUDGET MODAL ==================== */
+.budget-modal .modal-body {
+    padding: 1.5rem;
+}
+
+.budget-category-list {
+    margin-top: 1rem;
+}
+
+.budget-category-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.budget-category-item .cat-icon {
+    font-size: 1.25rem;
+    width: 40px;
+    text-align: center;
+}
+
+.budget-category-item label {
+    flex: 1;
+    margin: 0;
+    font-weight: 500;
+}
+
+.budget-category-item input {
+    width: 120px;
+    padding: 0.5rem;
+    text-align: right;
+}
+
+/* ==================== ANIMATIONS ==================== */
+.expense-item {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Badge kazanma animasyonu */
+.badge-item.just-earned {
+    animation: badgeEarned 0.5s ease-out;
+}
+
+@keyframes badgeEarned {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Streak artış animasyonu */
+.streak-count.increment {
+    animation: countUp 0.3s ease-out;
+}
+
+@keyframes countUp {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); color: #FFD700; }
+    100% { transform: scale(1); }
+}

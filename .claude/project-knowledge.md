@@ -2,7 +2,7 @@
 
 > Bu dosya Claude tarafından sürekli güncellenir. Proje hakkında tüm kritik bilgileri içerir.
 
-**Son Güncelleme:** 2025-12-04 (Sync Manager)
+**Son Güncelleme:** 2025-12-07 (Expense Manager)
 
 ---
 
@@ -12,7 +12,7 @@
 |------|-------|
 | **Proje Adı** | Life Manager (Günlük Yaşam Yöneticisi) |
 | **Eski Adı** | Çalışma Programı Asistanı |
-| **Versiyon** | 3.0.0 |
+| **Versiyon** | 3.5.0 |
 | **Tip** | PWA (Progressive Web App) |
 | **Dil** | Türkçe |
 | **Lisans** | - |
@@ -62,7 +62,9 @@ calisma-programi-asistan-v2/
 │   ├── magnetic-tilt.css      # Animasyon efektleri
 │   ├── auth-styles.css        # Kimlik doğrulama stilleri
 │   ├── onboarding-styles.css  # Yeni kullanıcı wizard stilleri
-│   └── sync-indicator.css     # Senkronizasyon durumu göstergesi
+│   ├── sync-indicator.css     # Senkronizasyon durumu göstergesi
+│   ├── health-styles.css      # Sağlık takibi stilleri
+│   └── expense-styles.css     # Harcama takibi stilleri
 │
 ├── js/
 │   ├── app.js                 # Ana uygulama (StudyProgramManager, App class)
@@ -76,7 +78,9 @@ calisma-programi-asistan-v2/
 │   │   └── sync-manager.js    # Firebase senkronizasyon yönetimi
 │   │
 │   ├── features/              # Özellik modülleri
-│   │   └── todo-manager.js    # TODO sistemi
+│   │   ├── todo-manager.js    # TODO sistemi
+│   │   ├── health-manager.js  # Sağlık/ilaç takibi
+│   │   └── expense-manager.js # Harcama takibi
 │   │
 │   ├── program-wizard.js      # Çalışma programı oluşturma
 │   ├── calendar-view.js       # Takvim yönetimi
@@ -242,12 +246,33 @@ expenses/{userId}
 |-------|---------|-------|
 | Çoklu kullanıcı desteği yok | Yüksek | Firebase ile çözülecek |
 | Cihazlar arası sync yok | Yüksek | Firebase ile çözülecek |
-| Health tracking UI yok | Orta | FAZ 5'te yapılacak |
-| Expense tracking UI yok | Orta | FAZ 6'da yapılacak |
+| Health tracking UI yok | Orta | ✅ Tamamlandı (health-manager.js) |
+| Expense tracking UI yok | Orta | Beklemede (banka API gerekli) |
 
 ---
 
 ## 11. Değişiklik Günlüğü
+
+### 2025-12-07 (Expense Manager)
+- [x] expense-manager.js oluşturuldu (700+ satır)
+- [x] expense-styles.css oluşturuldu
+- [x] İşlem CRUD (gelir/gider)
+- [x] Bütçe yönetimi (aylık + kategori bazlı)
+- [x] Streak sistemi (Duolingo benzeri)
+- [x] Rozet sistemi (9 farklı rozet)
+- [x] Chart.js entegrasyonu (Doughnut + Bar chart)
+- [x] Hızlı şablon sistemi
+- [x] Expense modal ve budget modal
+- [x] Service Worker v3.5.0'a güncellendi
+
+### 2025-12-04 (Health Manager)
+- [x] health-manager.js oluşturuldu
+- [x] health-styles.css oluşturuldu
+- [x] İlaç/vitamin CRUD işlemleri
+- [x] Günlük/haftalık tekrar ayarları
+- [x] Alım zamanları ve hatırlatıcılar
+- [x] Su tüketimi takibi
+- [x] Service Worker v3.4.0'a güncellendi
 
 ### 2025-12-04 (Sync Manager)
 - [x] sync-manager.js oluşturuldu
@@ -297,22 +322,49 @@ expenses/{userId}
 
 ---
 
-## 13. Sonraki Adımlar
+## 13. Gelecek Planları (Hatırlatıcı)
 
-1. **Firebase Console'da proje oluştur**
-   - Authentication → Email/Password etkinleştir
-   - Firestore Database oluştur
-   - Web app credentials al
+### Faz 2 - Google Fit Entegrasyonu
+| Özellik | Durum | Not |
+|---------|-------|-----|
+| Google Fit API bağlantısı | ⏳ Bekliyor | OAuth gerekli |
+| Adım sayısı takibi | ⏳ Bekliyor | Fitness API |
+| Kalori takibi | ⏳ Bekliyor | Fitness API |
+| Uyku takibi | ⏳ Bekliyor | Sleep API |
 
-2. **firebase-config.js oluştur**
-   - SDK entegrasyonu
-   - Config bilgileri
+### Faz 3 - Akıllı Sağlık Önerileri
+| Özellik | Durum | Not |
+|---------|-------|-----|
+| OpenFDA API entegrasyonu | ⏳ Bekliyor | İlaç bilgileri |
+| İlaç yan etkileri | ⏳ Bekliyor | Side effects DB |
+| Otomatik su önerisi | ⏳ Bekliyor | İlaç bazlı hesaplama |
+| İlaç etkileşim uyarıları | ⏳ Bekliyor | Drug interactions |
+| Spor/vitamin önerileri | ⏳ Bekliyor | Aktivite bazlı |
 
-3. **auth-manager.js oluştur**
-   - Login/Register UI
-   - Auth state yönetimi
+### Faz 4 - Akıllı Saat (Native App Gerektirir)
+| Özellik | Durum | Not |
+|---------|-------|-----|
+| WearOS uygulaması | ⏳ Bekliyor | Kotlin/Android |
+| watchOS uygulaması | ⏳ Bekliyor | Swift/iOS |
+| İlaç hatırlatıcı (saat) | ⏳ Bekliyor | Watch notifications |
+| Tansiyon/nabız takibi | ⏳ Bekliyor | Sensor API |
+| Anlık sağlık metrikleri | ⏳ Bekliyor | Health sensors |
 
-4. **Onboarding wizard**
-   - Hoşgeldin ekranı
-   - Profil kurulumu
+### Faz 5 - Harcama Takibi (Opsiyonel)
+| Özellik | Durum | Not |
+|---------|-------|-----|
+| Open Banking API | ⏳ Bekliyor | Banka ortaklıkları gerekli |
+| Manuel giriş | ❌ İptal | Kullanıcı talebi - pratik değil |
+| Bütçe grafikleri | ⏳ Bekliyor | API hazır olunca |
+
+---
+
+## 14. Tamamlanan Adımlar
+
+1. ✅ Firebase Console kurulumu
+2. ✅ firebase-config.js
+3. ✅ auth-manager.js
+4. ✅ Onboarding wizard
+5. ✅ sync-manager.js
+6. ✅ health-manager.js
    - Örnek veriler
