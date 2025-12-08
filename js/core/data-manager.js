@@ -194,6 +194,75 @@ class DataManager {
       return true;
     } catch (error) {
       console.error(`📦 Kaydetme hatası (${key}):`, error);
+
+      // QuotaExceededError kontrolü
+      if (error.name === 'QuotaExceededError' ||
+          error.code === 22 || // Eski tarayıcılar
+          error.code === 1014 || // Firefox
+          error.message?.includes('quota')) {
+
+        console.warn('📦 localStorage dolu! Temizleme deneniyor...');
+
+        // Kullanıcıya uyarı göster
+        this.showStorageWarning();
+
+        // Eski/gereksiz verileri temizlemeyi dene
+        if (this.cleanupOldData()) {
+          // Tekrar dene
+          try {
+            localStorage.setItem(key, JSON.stringify(data));
+            return true;
+          } catch (retryError) {
+            console.error('📦 Temizlik sonrası da kayıt başarısız:', retryError);
+          }
+        }
+      }
+
+      return false;
+    }
+  }
+
+  /**
+   * Depolama uyarısı göster
+   */
+  static showStorageWarning() {
+    // Notification manager varsa kullan
+    if (window.notificationManager) {
+      notificationManager.show(
+        'Depolama Uyarısı',
+        'Cihaz depolama alanı dolmak üzere. Eski verileri silmeyi düşünün.',
+        'warning'
+      );
+    } else {
+      // Fallback: console ve basit alert
+      alert('Depolama alanı dolmak üzere! Lütfen eski verileri temizleyin.');
+    }
+  }
+
+  /**
+   * Eski verileri temizle (depolama dolduğunda)
+   */
+  static cleanupOldData() {
+    try {
+      // Çalışma loglarının eski olanlarını temizle (30 günden eski)
+      const logs = this.load(this.KEYS.STUDY_LOGS);
+      if (logs && Array.isArray(logs)) {
+        const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+        const recentLogs = logs.filter(log => {
+          const logDate = new Date(log.date || log.timestamp).getTime();
+          return logDate > thirtyDaysAgo;
+        });
+
+        if (recentLogs.length < logs.length) {
+          localStorage.setItem(this.KEYS.STUDY_LOGS, JSON.stringify(recentLogs));
+          console.log(`📦 ${logs.length - recentLogs.length} eski log temizlendi`);
+          return true;
+        }
+      }
+
+      return false;
+    } catch (error) {
+      console.error('📦 Temizlik hatası:', error);
       return false;
     }
   }

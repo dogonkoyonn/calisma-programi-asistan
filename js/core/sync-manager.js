@@ -531,27 +531,43 @@ class SyncManager {
 
 // Global instance
 let syncManager;
+let syncManagerInitialized = false;
+
+// SyncManager'ı güvenli şekilde başlat (race condition önleme)
+function initializeSyncManager() {
+    if (syncManagerInitialized) return;
+    syncManagerInitialized = true;
+
+    syncManager = new SyncManager();
+    window.syncManager = syncManager;
+    console.log('[SyncManager] Başlatıldı');
+}
+
+// Firebase hazır olana kadar bekle (Promise-based)
+function waitForFirebase(timeout = 5000) {
+    return new Promise((resolve) => {
+        const startTime = Date.now();
+
+        const check = () => {
+            if (isFirebaseReady()) {
+                resolve(true);
+            } else if (Date.now() - startTime >= timeout) {
+                console.warn('[SyncManager] Firebase başlatılamadı, offline mod');
+                resolve(false);
+            } else {
+                // 250ms interval (100ms yerine - daha az CPU kullanımı)
+                setTimeout(check, 250);
+            }
+        };
+
+        check();
+    });
+}
 
 // DOM yüklendiğinde başlat
-document.addEventListener('DOMContentLoaded', () => {
-    // Firebase hazır olana kadar bekle
-    const checkFirebase = setInterval(() => {
-        if (isFirebaseReady()) {
-            clearInterval(checkFirebase);
-            syncManager = new SyncManager();
-            window.syncManager = syncManager;
-        }
-    }, 100);
-
-    // 5 saniye timeout
-    setTimeout(() => {
-        clearInterval(checkFirebase);
-        if (!syncManager) {
-            console.warn('[SyncManager] Firebase başlatılamadı, offline mod');
-            syncManager = new SyncManager();
-            window.syncManager = syncManager;
-        }
-    }, 5000);
+document.addEventListener('DOMContentLoaded', async () => {
+    await waitForFirebase(5000);
+    initializeSyncManager();
 });
 
 console.log('[Sync Manager] Yüklendi');

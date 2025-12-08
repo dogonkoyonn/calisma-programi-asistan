@@ -1036,9 +1036,11 @@
             return Math.round((completed / program.topics.length) * 100);
         }
 
-        // Placeholder fonksiyonlar (sonra implement edilecek)
+        // Health modal - health-manager.js'deki fonksiyonu çağırır
         function openHealthModal() {
-            alert('Sağlık takibi modülü yakında eklenecek!');
+            if (window.healthManager) {
+                healthManager.openAddModal();
+            }
         }
 
         function openExpenseModal() {

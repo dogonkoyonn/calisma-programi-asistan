@@ -1,7 +1,7 @@
 // ==================== SERVICE WORKER - PWA ====================
 // Offline support & caching strategy
 
-const VERSION = '3.5.0';
+const VERSION = '3.6.0';
 const CACHE_NAME = `lifemanager-v${VERSION}`;
 const DYNAMIC_CACHE = `lifemanager-dynamic-v${VERSION}`;
 
@@ -65,6 +65,12 @@ const urlsToCache = [
   BASE + '/js/loading-spinner.js',
   BASE + '/js/pdf-export.js',
   BASE + '/js/feedback-form.js',
+  BASE + '/js/magnetic-tilt.js',
+  BASE + '/js/error-logger.js',
+  BASE + '/js/email-notifier.js',
+  BASE + '/js/telegram-notifier.js',
+  BASE + '/js/telegram-bot.js',
+  BASE + '/js/update-manager.js',
   // Fonts
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
 ];
