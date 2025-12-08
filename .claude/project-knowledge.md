@@ -2,7 +2,7 @@
 
 > Bu dosya Claude tarafından sürekli güncellenir. Proje hakkında tüm kritik bilgileri içerir.
 
-**Son Güncelleme:** 2025-12-07 (Expense Manager)
+**Son Güncelleme:** 2025-12-08 (Kritik Düzeltmeler)
 
 ---
 
@@ -12,7 +12,7 @@
 |------|-------|
 | **Proje Adı** | Life Manager (Günlük Yaşam Yöneticisi) |
 | **Eski Adı** | Çalışma Programı Asistanı |
-| **Versiyon** | 3.5.0 |
+| **Versiyon** | 3.6.0 |
 | **Tip** | PWA (Progressive Web App) |
 | **Dil** | Türkçe |
 | **Lisans** | - |
@@ -252,6 +252,13 @@ expenses/{userId}
 ---
 
 ## 11. Değişiklik Günlüğü
+
+### 2025-12-08 (Kritik Düzeltmeler - Faz 1)
+- [x] Health modal fix - artık healthManager.openAddModal() çağırıyor
+- [x] Service Worker v3.6.0 - 6 eksik JS dosyası eklendi
+- [x] Sync manager race condition düzeltildi (Promise-based)
+- [x] localStorage QuotaExceededError handling eklendi
+- [x] Otomatik eski veri temizleme özelliği
 
 ### 2025-12-07 (Expense Manager)
 - [x] expense-manager.js oluşturuldu (700+ satır)
